@@ -14,7 +14,7 @@ class TransactionTopView: UIView {
     //MARK: Variables
     
     let buttonView: UIView = UIView().then{
-        $0.backgroundColor = .black // F5F5F5로 변경
+        $0.backgroundColor = UIColor(hexCode: "F5F5F5")
     }
 
     let weekButton: UIButton = UIButton().then{

@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window?.rootViewController = tabBarController
         
-        mainVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "TabBarMain"), tag: 0)
+        mainVC.tabBarItem = UITabBarItem(title: "activity", image: UIImage(named: "TabBarMain"), tag: 0)
         tabBarController.tabBar.backgroundColor = .black
         tabBarController.tabBar.tintColor = .white
         
