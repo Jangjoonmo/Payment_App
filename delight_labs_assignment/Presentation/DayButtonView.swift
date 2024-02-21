@@ -11,6 +11,8 @@ import Then
 
 class TopView: UIView {
     
+    //MARK: Variables
+    
     let buttonView: UIView = UIView().then{
         $0.backgroundColor = .black // F5F5F5로 변경
     }
@@ -18,7 +20,7 @@ class TopView: UIView {
     let weekButton: UIButton = UIButton().then{
         $0.setTitle("Week", for: .normal)
         $0.setTitleColor(.white, for: .selected)
-        $0.setTitleColor(.gray, for: .disabled) // #363062
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .disabled) // #363062
         
         $0.configuration = UIButton.Configuration.bordered()
     }
@@ -26,7 +28,7 @@ class TopView: UIView {
     let monthButton: UIButton = UIButton().then{
         $0.setTitle("Month", for: .normal)
         $0.setTitleColor(.white, for: .selected)
-        $0.setTitleColor(.gray, for: .disabled) // #363062
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .disabled) // #363062
 
         $0.configuration = UIButton.Configuration.bordered()
     }
@@ -37,7 +39,7 @@ class TopView: UIView {
     }
     
     let incomeView: UIView = UIView().then{
-        $0.backgroundColor = .blue // #363062
+        $0.backgroundColor = UIColor(named: "MainColor") // #363062
     }
     
     let incomeLabel: UILabel = UILabel().then{
@@ -46,7 +48,7 @@ class TopView: UIView {
     }
     
     let expenseView: UIView = UIView().then{
-        $0.backgroundColor = .blue // #363062
+        $0.backgroundColor = UIColor(named: "GreenColor") // #5BDAA4
     }
     
     let expenseLabel: UILabel = UILabel().then{
@@ -54,10 +56,15 @@ class TopView: UIView {
         $0.sizeToFit()
     }
     
+    //MARK: init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
     }
+    
+    
+    //MARK: setUI()
     
     private func setUI() {
         self.backgroundColor = .black // F5F5F5로 변경
