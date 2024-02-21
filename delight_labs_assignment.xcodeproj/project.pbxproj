@@ -25,6 +25,7 @@
 		9435A30A2B861C580009CE29 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A3092B861C580009CE29 /* DGCharts */; };
 		9435A30C2B861DF50009CE29 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A30B2B861DF50009CE29 /* TransactionViewModel.swift */; };
 		9435A30E2B861E7B0009CE29 /* TransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A30D2B861E7B0009CE29 /* TransactionModel.swift */; };
+		9435A3162B862AC20009CE29 /* RecentTransactionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3152B862AC20009CE29 /* RecentTransactionButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		9435A3062B86154F0009CE29 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		9435A30B2B861DF50009CE29 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		9435A30D2B861E7B0009CE29 /* TransactionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionModel.swift; sourceTree = "<group>"; };
+		9435A3152B862AC20009CE29 /* RecentTransactionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTransactionButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,9 +106,9 @@
 		9435A2EC2B85F81F0009CE29 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				9435A3142B862A7D0009CE29 /* View */,
+				9435A3112B8629550009CE29 /* Recent Transactions */,
 				9435A2DB2B85F7740009CE29 /* ViewController.swift */,
-				9435A2FB2B85FB8F0009CE29 /* TransactionTopView.swift */,
-				9435A3002B860C7F0009CE29 /* TransactionTableViewCell.swift */,
 				9435A30B2B861DF50009CE29 /* TransactionViewModel.swift */,
 			);
 			path = Presentation;
@@ -135,6 +137,23 @@
 				9435A3062B86154F0009CE29 /* UIColor+.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		9435A3112B8629550009CE29 /* Recent Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				9435A3002B860C7F0009CE29 /* TransactionTableViewCell.swift */,
+			);
+			path = "Recent Transactions";
+			sourceTree = "<group>";
+		};
+		9435A3142B862A7D0009CE29 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9435A2FB2B85FB8F0009CE29 /* TransactionTopView.swift */,
+				9435A3152B862AC20009CE29 /* RecentTransactionButtonView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9435A3162B862AC20009CE29 /* RecentTransactionButtonView.swift in Sources */,
 				9435A30E2B861E7B0009CE29 /* TransactionModel.swift in Sources */,
 				9435A2DC2B85F7740009CE29 /* ViewController.swift in Sources */,
 				9435A3012B860C7F0009CE29 /* TransactionTableViewCell.swift in Sources */,

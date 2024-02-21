@@ -11,10 +11,14 @@ import RxSwift
 class ViewController: UIViewController {
 
     // MARK: Variables
-    let topView = TransactionTopView()
     
+    let scrollView = UIScrollView()
+    let contentView = UIView() // 스크롤 뷰 안의 콘텐츠 뷰 추가
+    let topView = TransactionTopView()
+    let recentTransactionsHeaderView = RecentTransactionButtonView()
     var tableView: UITableView = UITableView().then{
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
+        $0.isScrollEnabled = false
     }
     
     let viewModel = TransactionViewModel()
@@ -26,9 +30,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        setUpView()
-        //        setUpLayout()
-        //        setUpConstraint()
+        setUpView()
+        setUpLayout()
+        setUpConstraint()
         bindViewModel()
     }
     
@@ -43,6 +47,9 @@ class ViewController: UIViewController {
     // MARK: Layout
     
     func setUpLayout() {
+        self.view.addSubview(scrollView)
+        [topView, recentTransactionsHeaderView, tableView]
+            .forEach{scrollView.addSubview($0)}
         
     }
     
@@ -60,6 +67,7 @@ class ViewController: UIViewController {
         output.error.subscribe(onNext: { error in
             print(error)
         }).disposed(by: disposeBag)
+        
     }
     
     
