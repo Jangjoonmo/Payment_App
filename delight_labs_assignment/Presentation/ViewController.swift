@@ -23,8 +23,8 @@ class ViewController: UIViewController {
         $0.isScrollEnabled = false
     }
     
-    let viewModel = TransactionViewModel()
-    let transactionTrigger = PublishSubject<Void>()
+    let viewModel = TableViewModel()
+    let allTrigger = PublishSubject<Void>()
     let disposeBag = DisposeBag()
 
     // MARK: viewDidLoad()
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         setUpConstraint()
         bindViewModel()
         
-        transactionTrigger.onNext(())
+        allTrigger.onNext(())
     }
     
     
@@ -60,11 +60,12 @@ class ViewController: UIViewController {
     // MARK: BindViewModel
     
     private func bindViewModel() {
-        let input = TransactionViewModel.Input(transactionTrigger: transactionTrigger.asObservable())
-        
+        let input = TableViewModel.Input(allTrigger: allTrigger.asObservable(),
+                                                expenseTrigger: .empty(),
+                                                incomeTrigger: .empty())
         let output = viewModel.transform(input: input)
         
-        output.transactions
+        output.allTransactions
             .take(20)
             .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
             cell.configure(transaction)
@@ -112,10 +113,10 @@ class ViewController: UIViewController {
 
 }
 
-import SwiftUI
-struct ViewController_Preview: PreviewProvider {
-    static var previews: some View {
-        ViewController().toPreview()
-            // .edgesIgnoringSafeArea(.all)
-    }
-}
+//import SwiftUI
+//struct ViewController_Preview: PreviewProvider {
+//    static var previews: some View {
+//        ViewController().toPreview()
+//            // .edgesIgnoringSafeArea(.all)
+//    }
+//}

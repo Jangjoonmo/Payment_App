@@ -101,7 +101,7 @@ class TransactionTableViewCell: UITableViewCell {
     
     // MARK: Func
     
-    func configure(_ transaction: Transaction) {
+    func configure(_ transaction: TransactionData) {
         nameLabel.text = transaction.name
         typeLabel.text = transaction.type
         let amount = Double(transaction.amount) ?? 0.0
