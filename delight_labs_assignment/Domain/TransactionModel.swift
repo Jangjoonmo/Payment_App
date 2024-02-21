@@ -10,6 +10,6 @@ import Foundation
 struct Transaction: Codable {
     let name: String
     let amount: String
-    let timestamp: String
+    let timestamp: Date
     let type: String
 }

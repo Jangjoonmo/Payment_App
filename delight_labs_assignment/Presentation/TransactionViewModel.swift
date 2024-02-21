@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import UIKit
 
 class TransactionViewModel {
     
@@ -42,28 +43,18 @@ class TransactionViewModel {
     }
 
     private func fetchTransactions(completion: @escaping (Result<[Transaction], Error>) -> Void) {
-        let url = URL(string: "https://drive.google.com/u/0/uc?id=1nGe0wgoNRM-VAPF53wSEfqtKwU0BKfEV&export=download")!
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-
-            guard let data = data else {
-                let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "데이터가 없습니다."])
-                completion(.failure(error))
-                return
-            }
-
-            let decoder = JSONDecoder()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.dispatchGroup.notify(queue: .main) {
+            let url = getDocumentsDirectory().appendingPathComponent("latestTransactions.json")
             do {
-                let transactions = try decoder.decode([Transaction].self, from: data)
+                let data = try Data(contentsOf: url)
+                let transactions = try JSONDecoder().decode([Transaction].self, from: data)
                 completion(.success(transactions))
             } catch {
                 completion(.failure(error))
             }
         }
 
-        task.resume()
     }
 }

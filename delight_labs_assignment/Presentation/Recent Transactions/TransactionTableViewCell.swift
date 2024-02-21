@@ -105,16 +105,12 @@ class TransactionTableViewCell: UITableViewCell {
         nameLabel.text = transaction.name
         typeLabel.text = transaction.type
         let amount = Double(transaction.amount) ?? 0.0
-        let amountToString = String(format: "%.1f", transaction.amount)
+        let amountToString = String(format: "%.1f", abs(amount)) // 절댓값으로 변환
         amountLabel.text = amount < 0 ? "-$\(amountToString)" : "+$\(amountToString)"
         timeStampLabel.text = timestampFormat(transaction.timestamp)
     }
-    
-    private func timestampFormat(_ timestamp: String) -> String? {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ" // 입력 형식 설정
-        guard let date = inputFormatter.date(from: timestamp) else { return nil } // Date로 변환
 
+    private func timestampFormat(_ date: Date) -> String {
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "h.mm a" // 출력 형식 설정
         outputFormatter.amSymbol = "AM"

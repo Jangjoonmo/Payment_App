@@ -25,6 +25,9 @@
 		9435A30C2B861DF50009CE29 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A30B2B861DF50009CE29 /* TransactionViewModel.swift */; };
 		9435A30E2B861E7B0009CE29 /* TransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A30D2B861E7B0009CE29 /* TransactionModel.swift */; };
 		9435A3162B862AC20009CE29 /* RecentTransactionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3152B862AC20009CE29 /* RecentTransactionButtonView.swift */; };
+		9435A31A2B865F290009CE29 /* splitTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3192B865F290009CE29 /* splitTransactionData.swift */; };
+		9435A31D2B866C990009CE29 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A31C2B866C990009CE29 /* Realm */; };
+		9435A31F2B866C990009CE29 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A31E2B866C990009CE29 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,7 @@
 		9435A30B2B861DF50009CE29 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		9435A30D2B861E7B0009CE29 /* TransactionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionModel.swift; sourceTree = "<group>"; };
 		9435A3152B862AC20009CE29 /* RecentTransactionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTransactionButtonView.swift; sourceTree = "<group>"; };
+		9435A3192B865F290009CE29 /* splitTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = splitTransactionData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9435A31F2B866C990009CE29 /* RealmSwift in Frameworks */,
+				9435A31D2B866C990009CE29 /* Realm in Frameworks */,
 				9435A2FA2B85FA560009CE29 /* Then in Frameworks */,
 				9435A2F42B85FA290009CE29 /* RxSwift in Frameworks */,
 				9435A2F72B85FA360009CE29 /* SnapKit in Frameworks */,
@@ -96,6 +102,7 @@
 		9435A2EB2B85F8030009CE29 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				9435A3192B865F290009CE29 /* splitTransactionData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -176,6 +183,8 @@
 				9435A2F62B85FA360009CE29 /* SnapKit */,
 				9435A2F92B85FA560009CE29 /* Then */,
 				9435A3092B861C580009CE29 /* DGCharts */,
+				9435A31C2B866C990009CE29 /* Realm */,
+				9435A31E2B866C990009CE29 /* RealmSwift */,
 			);
 			productName = delight_labs_assignment;
 			productReference = 9435A2D42B85F7740009CE29 /* delight_labs_assignment.app */;
@@ -210,6 +219,7 @@
 				9435A2F52B85FA360009CE29 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				9435A2F82B85FA560009CE29 /* XCRemoteSwiftPackageReference "Then" */,
 				9435A3082B861C580009CE29 /* XCRemoteSwiftPackageReference "Charts" */,
+				9435A31B2B866C990009CE29 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 9435A2D52B85F7740009CE29 /* Products */;
 			projectDirPath = "";
@@ -246,6 +256,7 @@
 				9435A2DA2B85F7740009CE29 /* SceneDelegate.swift in Sources */,
 				9435A2FC2B85FB8F0009CE29 /* TransactionTopView.swift in Sources */,
 				9435A3072B86154F0009CE29 /* UIColor+.swift in Sources */,
+				9435A31A2B865F290009CE29 /* splitTransactionData.swift in Sources */,
 				9435A30C2B861DF50009CE29 /* TransactionViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,6 +502,14 @@
 				minimumVersion = 5.1.0;
 			};
 		};
+		9435A31B2B866C990009CE29 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.47.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -523,6 +542,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9435A3082B861C580009CE29 /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = DGCharts;
+		};
+		9435A31C2B866C990009CE29 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9435A31B2B866C990009CE29 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		9435A31E2B866C990009CE29 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9435A31B2B866C990009CE29 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
