@@ -67,7 +67,7 @@ class TransactionTopView: UIView {
     //MARK: setUI()
     
     private func setUI() {
-        self.backgroundColor = .black // F5F5F5로 변경
+        self.backgroundColor = .white
         [buttonView, dateLabel, incomeView, incomeLabel, expenseView, expenseLabel]
             .forEach{ self.addSubview($0)}
         

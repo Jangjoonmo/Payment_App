@@ -24,7 +24,7 @@ class RecentTransactionButtonView: UIView {
     
     let allButton: UIButton = UIButton().then{
         $0.setTitle("All", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .highlighted)
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .normal)
         $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .disabled)
         $0.backgroundColor = .none
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
@@ -32,7 +32,7 @@ class RecentTransactionButtonView: UIView {
     
     let expenseButton: UIButton = UIButton().then{
         $0.setTitle("Expense", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .highlighted)
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .normal)
         $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .disabled)
         $0.backgroundColor = .none
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
@@ -40,7 +40,7 @@ class RecentTransactionButtonView: UIView {
     
     let incomeButton: UIButton = UIButton().then{
         $0.setTitle("Income", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .highlighted)
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .normal)
         $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .disabled)
         $0.backgroundColor = .none
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
