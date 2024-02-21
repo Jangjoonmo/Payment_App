@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     
     let scrollView = UIScrollView()
     let contentView = UIView() // 스크롤 뷰 안의 콘텐츠 뷰 추가
+    
     let topView = TransactionTopView()
     let recentTransactionsHeaderView = RecentTransactionButtonView()
     var tableView: UITableView = UITableView().then{
@@ -48,9 +49,9 @@ class ViewController: UIViewController {
     
     func setUpLayout() {
         self.view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         [topView, recentTransactionsHeaderView, tableView]
-            .forEach{scrollView.addSubview($0)}
-        
+            .forEach{contentView.addSubview($0)}
     }
     
     // MARK: BindViewModel
@@ -74,6 +75,29 @@ class ViewController: UIViewController {
     // MARK: Constraint
     
     func setUpConstraint() {
+        scrollView.snp.makeConstraints{
+            $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()    
+        }
+        contentView.snp.makeConstraints{
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide)
+        }
+        topView.snp.makeConstraints{
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(28)
+            $0.height.equalTo(66)
+        }
+        recentTransactionsHeaderView.snp.makeConstraints{
+            $0.top.equalTo(topView.snp.bottom).offset(30)   // Fix
+            $0.horizontalEdges.equalToSuperview().inset(30)
+            $0.height.equalTo(81)
+        }
+        tableView.snp.makeConstraints{
+            $0.top.equalTo(recentTransactionsHeaderView.snp.bottom).offset(30)
+            $0.horizontalEdges.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview()
+        }
         
     }
     
