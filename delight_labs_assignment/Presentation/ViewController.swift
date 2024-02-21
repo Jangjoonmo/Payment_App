@@ -64,7 +64,9 @@ class ViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
-        output.transactions.bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
+        output.transactions
+            .take(20)
+            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
             cell.configure(transaction)
         }.disposed(by: disposeBag)
         
