@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
 
@@ -35,6 +36,8 @@ class ViewController: UIViewController {
         setUpLayout()
         setUpConstraint()
         bindViewModel()
+        
+        transactionTrigger.onNext(())
     }
     
     
@@ -61,9 +64,9 @@ class ViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
-        output.transactions.subscribe(onNext: { transactions in
-            
-        }).disposed(by: disposeBag)
+        output.transactions.bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
+            cell.configure(transaction)
+        }.disposed(by: disposeBag)
         
         output.error.subscribe(onNext: { error in
             print(error)

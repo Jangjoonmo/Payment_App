@@ -12,6 +12,4 @@ struct Transaction: Codable {
     let amount: Double
     let timestamp: String
     let type: String
-    
-    
 }

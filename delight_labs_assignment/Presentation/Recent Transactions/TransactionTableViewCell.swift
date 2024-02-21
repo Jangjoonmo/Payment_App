@@ -99,6 +99,29 @@ class TransactionTableViewCell: UITableViewCell {
         }
     }
     
+    // MARK: Func
+    
+    func configure(_ transaction: Transaction) {
+        nameLabel.text = transaction.name
+        typeLabel.text = transaction.type
+        let amountToString = String(format: "%.1f", transaction.amount)
+        amountLabel.text = transaction.amount < 0 ? "-$\(amountToString)" : "+$\(amountToString)"
+        timeStampLabel.text = timestampFormat(transaction.timestamp)
+    }
+    
+    private func timestampFormat(_ timestamp: String) -> String? {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ" // 입력 형식 설정
+        guard let date = inputFormatter.date(from: timestamp) else { return nil } // Date로 변환
+
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "h.mm a" // 출력 형식 설정
+        outputFormatter.amSymbol = "AM"
+        outputFormatter.pmSymbol = "PM"
+        
+        return outputFormatter.string(from: date) // 문자열로 변환 후 반환
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
