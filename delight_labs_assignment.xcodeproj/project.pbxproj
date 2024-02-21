@@ -18,10 +18,11 @@
 		9435A2F42B85FA290009CE29 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A2F32B85FA290009CE29 /* RxSwift */; };
 		9435A2F72B85FA360009CE29 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A2F62B85FA360009CE29 /* SnapKit */; };
 		9435A2FA2B85FA560009CE29 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A2F92B85FA560009CE29 /* Then */; };
-		9435A2FC2B85FB8F0009CE29 /* DayButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A2FB2B85FB8F0009CE29 /* DayButtonView.swift */; };
+		9435A2FC2B85FB8F0009CE29 /* TransactionTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A2FB2B85FB8F0009CE29 /* TransactionTopView.swift */; };
 		9435A3012B860C7F0009CE29 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3002B860C7F0009CE29 /* TransactionTableViewCell.swift */; };
 		9435A3052B8611A50009CE29 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3042B8611A50009CE29 /* UIViewController+.swift */; };
 		9435A3072B86154F0009CE29 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3062B86154F0009CE29 /* UIColor+.swift */; };
+		9435A30A2B861C580009CE29 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 9435A3092B861C580009CE29 /* DGCharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +34,7 @@
 		9435A2E02B85F7780009CE29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9435A2E32B85F7780009CE29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9435A2E52B85F7780009CE29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9435A2FB2B85FB8F0009CE29 /* DayButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayButtonView.swift; sourceTree = "<group>"; };
+		9435A2FB2B85FB8F0009CE29 /* TransactionTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTopView.swift; sourceTree = "<group>"; };
 		9435A3002B860C7F0009CE29 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		9435A3042B8611A50009CE29 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		9435A3062B86154F0009CE29 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
@@ -48,6 +49,7 @@
 				9435A2F42B85FA290009CE29 /* RxSwift in Frameworks */,
 				9435A2F72B85FA360009CE29 /* SnapKit in Frameworks */,
 				9435A2F22B85FA290009CE29 /* RxRelay in Frameworks */,
+				9435A30A2B861C580009CE29 /* DGCharts in Frameworks */,
 				9435A2F02B85FA290009CE29 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,7 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				9435A2DB2B85F7740009CE29 /* ViewController.swift */,
-				9435A2FB2B85FB8F0009CE29 /* DayButtonView.swift */,
+				9435A2FB2B85FB8F0009CE29 /* TransactionTopView.swift */,
 				9435A3002B860C7F0009CE29 /* TransactionTableViewCell.swift */,
 			);
 			path = Presentation;
@@ -151,6 +153,7 @@
 				9435A2F32B85FA290009CE29 /* RxSwift */,
 				9435A2F62B85FA360009CE29 /* SnapKit */,
 				9435A2F92B85FA560009CE29 /* Then */,
+				9435A3092B861C580009CE29 /* DGCharts */,
 			);
 			productName = delight_labs_assignment;
 			productReference = 9435A2D42B85F7740009CE29 /* delight_labs_assignment.app */;
@@ -184,6 +187,7 @@
 				9435A2EE2B85FA280009CE29 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				9435A2F52B85FA360009CE29 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				9435A2F82B85FA560009CE29 /* XCRemoteSwiftPackageReference "Then" */,
+				9435A3082B861C580009CE29 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 9435A2D52B85F7740009CE29 /* Products */;
 			projectDirPath = "";
@@ -217,7 +221,7 @@
 				9435A3052B8611A50009CE29 /* UIViewController+.swift in Sources */,
 				9435A2D82B85F7740009CE29 /* AppDelegate.swift in Sources */,
 				9435A2DA2B85F7740009CE29 /* SceneDelegate.swift in Sources */,
-				9435A2FC2B85FB8F0009CE29 /* DayButtonView.swift in Sources */,
+				9435A2FC2B85FB8F0009CE29 /* TransactionTopView.swift in Sources */,
 				9435A3072B86154F0009CE29 /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +469,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		9435A3082B861C580009CE29 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -492,6 +504,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9435A2F82B85FA560009CE29 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		9435A3092B861C580009CE29 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9435A3082B861C580009CE29 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

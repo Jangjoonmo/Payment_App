@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class TopView: UIView {
+class TransactionTopView: UIView {
     
     //MARK: Variables
     

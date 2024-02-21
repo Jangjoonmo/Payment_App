@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     // MARK: Variables
+    let topView = TransactionTopView()
     
     // MARK: viewDidLoad()
     
