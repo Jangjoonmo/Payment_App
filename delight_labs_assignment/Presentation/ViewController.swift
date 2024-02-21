@@ -6,12 +6,21 @@
 //
 
 import UIKit
+import RxSwift
 
 class ViewController: UIViewController {
 
     // MARK: Variables
     let topView = TransactionTopView()
     
+    var tableView: UITableView = UITableView().then{
+        $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
+    }
+    
+    let viewModel = TransactionViewModel()
+    let transactionTrigger = PublishSubject<Void>()
+    let disposeBag = DisposeBag()
+
     // MARK: viewDidLoad()
     
     override func viewDidLoad() {
@@ -20,7 +29,7 @@ class ViewController: UIViewController {
         //        setUpView()
         //        setUpLayout()
         //        setUpConstraint()
-        //setUpDelegate()
+        bindViewModel()
     }
     
     
@@ -37,10 +46,20 @@ class ViewController: UIViewController {
         
     }
     
-    // MARK: Delegate
+    // MARK: BindViewModel
     
-    func setUpDelegate() {
+    private func bindViewModel() {
+        let input = TransactionViewModel.Input(transactionTrigger: transactionTrigger.asObservable())
         
+        let output = viewModel.transform(input: input)
+        
+        output.transactions.subscribe(onNext: { transactions in
+            
+        }).disposed(by: disposeBag)
+        
+        output.error.subscribe(onNext: { error in
+            print(error)
+        }).disposed(by: disposeBag)
     }
     
     
