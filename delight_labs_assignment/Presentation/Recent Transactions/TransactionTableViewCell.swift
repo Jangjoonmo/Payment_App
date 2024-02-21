@@ -104,8 +104,9 @@ class TransactionTableViewCell: UITableViewCell {
     func configure(_ transaction: Transaction) {
         nameLabel.text = transaction.name
         typeLabel.text = transaction.type
+        let amount = Double(transaction.amount) ?? 0.0
         let amountToString = String(format: "%.1f", transaction.amount)
-        amountLabel.text = transaction.amount < 0 ? "-$\(amountToString)" : "+$\(amountToString)"
+        amountLabel.text = amount < 0 ? "-$\(amountToString)" : "+$\(amountToString)"
         timeStampLabel.text = timestampFormat(transaction.timestamp)
     }
     

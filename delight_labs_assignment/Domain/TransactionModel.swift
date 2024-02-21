@@ -9,7 +9,7 @@ import Foundation
 
 struct Transaction: Codable {
     let name: String
-    let amount: Double
+    let amount: String
     let timestamp: String
     let type: String
 }
