@@ -14,25 +14,28 @@ class TransactionTableViewCell: UITableViewCell {
     static let cellID = "TransactionTableViewCell"
     
     let symbolImageView: UIImageView = UIImageView().then{
-        $0.backgroundColor = .gray
+        $0.backgroundColor = UIColor(hexCode: "#E2E2E2")
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
     }
     
     var nameLabel: UILabel = UILabel().then{
         $0.text = "Name"
-        $0.font = .systemFont(ofSize: 16)
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 16, weight: .bold)
         $0.sizeToFit()
     }
     
     var typeLabel: UILabel = UILabel().then{
         $0.text = "Transfer"
-        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = UIColor(hexCode: "#6B6B6B")
+        $0.font = .systemFont(ofSize: 14, weight: .medium)
+        $0.sizeToFit()
     }
     
     var amountLabel: UILabel = UILabel().then{
         $0.text = "+$432.9"
-        $0.font = .boldSystemFont(ofSize: 16)
+        $0.font = .systemFont(ofSize: 16, weight: .heavy)
         $0.textColor = UIColor(named: "MainColor")
         $0.textAlignment = .right
         $0.sizeToFit()
@@ -41,6 +44,7 @@ class TransactionTableViewCell: UITableViewCell {
     var timeStampLabel: UILabel = UILabel().then{
         $0.text = "3.30 AM"
         $0.font = .systemFont(ofSize: 14)
+        $0.textColor = UIColor(hexCode: "#6B6B6B")
         $0.textAlignment = .right
         $0.sizeToFit()
     }
@@ -70,16 +74,49 @@ class TransactionTableViewCell: UITableViewCell {
     // MARK: Constraint
     
     private func setUpConstraint() {
-        
+        symbolImageView.snp.makeConstraints{
+            $0.size.equalTo(51)
+            $0.leading.top.bottom.equalToSuperview()
+        }
+        nameLabel.snp.makeConstraints{
+            $0.leading.equalTo(symbolImageView.snp.trailing).offset(20)
+            $0.height.equalTo(24)
+            $0.top.equalToSuperview().inset(2.5)
+        }
+        typeLabel.snp.makeConstraints{
+            $0.leading.equalTo(nameLabel)
+            $0.height.equalTo(21)
+            $0.bottom.equalToSuperview()
+            $0.top.equalTo(nameLabel.snp.bottom).offset(1)
+        }
+        amountLabel.snp.makeConstraints{
+            $0.centerY.equalTo(nameLabel)
+            $0.trailing.equalToSuperview()
+        }
+        timeStampLabel.snp.makeConstraints{
+            $0.centerY.equalTo(typeLabel)
+            $0.trailing.equalToSuperview()
+        }
     }
-
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
 }
+
+#if DEBUG
+import SwiftUI
+
+@available(iOS 13.0, *)
+struct TransactionTableViewCell_Preview: PreviewProvider {
+    static var previews: some View {
+        UIViewPreview {
+            let cell = TransactionTableViewCell()
+            return cell
+        }
+        .previewLayout(.sizeThatFits)
+        .padding(10)
+    }
+}
+#endif
