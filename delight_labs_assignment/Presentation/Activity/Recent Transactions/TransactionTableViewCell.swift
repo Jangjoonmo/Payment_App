@@ -146,18 +146,18 @@ class TransactionTableViewCell: UITableViewCell {
 
 }
 
-#if DEBUG
-import SwiftUI
-
-@available(iOS 13.0, *)
-struct TransactionTableViewCell_Preview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let cell = TransactionTableViewCell()
-            return cell
-        }
-        .previewLayout(.sizeThatFits)
-        .padding(10)
-    }
-}
-#endif
+//#if DEBUG
+//import SwiftUI
+//
+//@available(iOS 13.0, *)
+//struct TransactionTableViewCell_Preview: PreviewProvider {
+//    static var previews: some View {
+//        UIViewPreview {
+//            let cell = TransactionTableViewCell()
+//            return cell
+//        }
+//        .previewLayout(.sizeThatFits)
+//        .padding(10)
+//    }
+//}
+//#endif

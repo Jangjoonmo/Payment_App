@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     let scrollView = UIScrollView()
     let contentView = UIView() // 스크롤 뷰 안의 콘텐츠 뷰 추가
     let loadingIndicator = UIActivityIndicatorView(style: .large)
-
+    
     let topView = TransactionTopView()
     lazy var tableView: UITableView = UITableView().then{
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         $0.isScrollEnabled = false
         $0.separatorStyle = .none
     }
-    
+    let chartView = ChartView()
     
     let transactionManager = TransactionManager()
     var viewModel: TableViewModel!
@@ -67,8 +67,42 @@ class ViewController: UIViewController {
     func setUpLayout() {
         self.view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [topView, tableView]
+        [topView, chartView, tableView]
             .forEach{contentView.addSubview($0)}
+    }
+    
+    // MARK: Constraint
+    
+    func setUpConstraint() {
+        scrollView.snp.makeConstraints{
+            $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        contentView.snp.makeConstraints{
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide)
+        }
+        topView.snp.makeConstraints{
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(28)
+            $0.height.equalTo(66)
+        }
+        
+        chartView.snp.makeConstraints{
+            $0.top.equalTo(topView.snp.bottom).offset(47)
+            $0.horizontalEdges.equalToSuperview().inset(30)
+            $0.bottom.equalTo(tableView.snp.top).inset(40)
+            $0.height.equalTo(232)
+        }
+        
+        tableView.snp.makeConstraints{
+            $0.top.equalTo(topView.snp.bottom).offset(30)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(1200)
+
+        }
+        
     }
     
     // MARK: BindViewModel
@@ -95,32 +129,7 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
     }
     
-    // MARK: Constraint
-    
-    func setUpConstraint() {
-        scrollView.snp.makeConstraints{
-            $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()    
-        }
-        contentView.snp.makeConstraints{
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.width.equalTo(scrollView.frameLayoutGuide)
-        }
-        topView.snp.makeConstraints{
-            $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(28)
-            $0.height.equalTo(66)
-        }
 
-        tableView.snp.makeConstraints{
-            $0.top.equalTo(topView.snp.bottom).offset(30)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(1200)
-
-        }
-        
-    }
     
     // MARK: Function
 
