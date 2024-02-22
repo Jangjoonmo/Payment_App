@@ -31,6 +31,9 @@
 		9435A32A2B87A9380009CE29 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3292B87A9380009CE29 /* Array+.swift */; };
 		9435A32C2B87C7B60009CE29 /* LineChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A32B2B87C7B60009CE29 /* LineChartViewModel.swift */; };
 		9435A32E2B87C7E30009CE29 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A32D2B87C7E30009CE29 /* LineChartView.swift */; };
+		9435A3332B87DEF10009CE29 /* BookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3322B87DEF10009CE29 /* BookingViewController.swift */; };
+		9435A3352B87DEFB0009CE29 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3342B87DEFB0009CE29 /* CardViewController.swift */; };
+		9435A3372B87DF070009CE29 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3362B87DF070009CE29 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +55,9 @@
 		9435A3292B87A9380009CE29 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		9435A32B2B87C7B60009CE29 /* LineChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartViewModel.swift; sourceTree = "<group>"; };
 		9435A32D2B87C7E30009CE29 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
+		9435A3322B87DEF10009CE29 /* BookingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingViewController.swift; sourceTree = "<group>"; };
+		9435A3342B87DEFB0009CE29 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
+		9435A3362B87DF070009CE29 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,9 @@
 		9435A2EC2B85F81F0009CE29 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				9435A3312B87DEE50009CE29 /* Booking */,
+				9435A3302B87DEC80009CE29 /* Card */,
+				9435A32F2B87DEC10009CE29 /* Profile */,
 				9435A3282B879D8C0009CE29 /* Activity */,
 			);
 			path = Presentation;
@@ -191,6 +200,30 @@
 				9435A3112B8629550009CE29 /* Recent Transactions */,
 			);
 			path = Activity;
+			sourceTree = "<group>";
+		};
+		9435A32F2B87DEC10009CE29 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				9435A3362B87DF070009CE29 /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		9435A3302B87DEC80009CE29 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				9435A3342B87DEFB0009CE29 /* CardViewController.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		9435A3312B87DEE50009CE29 /* Booking */ = {
+			isa = PBXGroup;
+			children = (
+				9435A3322B87DEF10009CE29 /* BookingViewController.swift */,
+			);
+			path = Booking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,12 +320,15 @@
 				9435A3012B860C7F0009CE29 /* TransactionTableViewCell.swift in Sources */,
 				9435A3052B8611A50009CE29 /* UIViewController+.swift in Sources */,
 				9435A2D82B85F7740009CE29 /* AppDelegate.swift in Sources */,
+				9435A3372B87DF070009CE29 /* ProfileViewController.swift in Sources */,
 				9435A2DA2B85F7740009CE29 /* SceneDelegate.swift in Sources */,
 				9435A32C2B87C7B60009CE29 /* LineChartViewModel.swift in Sources */,
 				9435A2FC2B85FB8F0009CE29 /* TransactionTopView.swift in Sources */,
 				9435A3072B86154F0009CE29 /* UIColor+.swift in Sources */,
 				9435A31A2B865F290009CE29 /* TransactionManager.swift in Sources */,
+				9435A3352B87DEFB0009CE29 /* CardViewController.swift in Sources */,
 				9435A30C2B861DF50009CE29 /* TableViewModel.swift in Sources */,
+				9435A3332B87DEF10009CE29 /* BookingViewController.swift in Sources */,
 				9435A32A2B87A9380009CE29 /* Array+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
