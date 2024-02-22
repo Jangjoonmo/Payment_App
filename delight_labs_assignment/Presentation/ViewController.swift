@@ -20,7 +20,7 @@ class ViewController: UIViewController {
 
     let topView = TransactionTopView()
     let recentTransactionsHeaderView = RecentTransactionButtonView()
-    var tableView: UITableView = UITableView().then{
+    lazy var tableView: UITableView = UITableView().then{
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
         $0.isScrollEnabled = false
     }
@@ -29,6 +29,8 @@ class ViewController: UIViewController {
     let transactionManager = TransactionManager()
     var viewModel: TableViewModel!
     let allTrigger = PublishSubject<Void>()
+    let expenseTrigger = PublishSubject<Void>()
+    let incomeTrigger = PublishSubject<Void>()
     let disposeBag = DisposeBag()
 
     // MARK: viewDidLoad()
@@ -40,18 +42,17 @@ class ViewController: UIViewController {
         setUpLayout()
         setUpConstraint()
         viewModel = TableViewModel(transactionManager: transactionManager)
-        TransactionManager.shared.parseJSON()
 
         bindViewModel()
-        setupLoadingIndicator()
+        bindView()
         
         allTrigger.onNext(())
     }
     
-    func setupLoadingIndicator() {
-        loadingIndicator.center = self.view.center
-        loadingIndicator.hidesWhenStopped = true
-        self.view.addSubview(loadingIndicator)
+    func setUpDelegate() {
+//        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        tableView.delegate = nil
+        tableView.dataSource = nil
     }
     
     // MARK: View
@@ -74,29 +75,36 @@ class ViewController: UIViewController {
     
     private func bindViewModel() {
         let input = TableViewModel.Input(allTrigger: allTrigger.asObservable(),
-                                                expenseTrigger: .empty(),
-                                                incomeTrigger: .empty())
+                                         expenseTrigger: expenseTrigger.asObservable(),
+                                         incomeTrigger: incomeTrigger.asObservable())
         let output = viewModel.transform(input: input)
         
         output.allTransactions
-            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
-                cell.configure(transaction)
+            .do(onNext: { transactions in
+                print("바인드 전 transactions: \(transactions)")
+            })
+            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { index, model, cell in
+                cell.configure(model)
             }.disposed(by: disposeBag)
-        
-//        output.expenseTransactions
-//            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
-//                cell.configure(transaction)
-//            }.disposed(by: disposeBag)
-//        
-//        output.incomeTransactions
-//            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { row, transaction, cell in
-//                cell.configure(transaction)
-//            }.disposed(by: disposeBag)
         
         output.error.subscribe(onNext: { error in
             print(error)
         }).disposed(by: disposeBag)
         
+    }
+    
+    private func bindView() {
+        recentTransactionsHeaderView.allButton.rx.tap.bind { [weak self] in
+            self?.allTrigger.onNext(Void())
+        }.disposed(by: disposeBag)
+        
+        recentTransactionsHeaderView.incomeButton.rx.tap.bind { [weak self] in
+            self?.incomeTrigger.onNext(Void())
+        }.disposed(by: disposeBag)
+        
+        recentTransactionsHeaderView.expenseButton.rx.tap.bind { [weak self] in
+            self?.expenseTrigger.onNext(Void())
+        }.disposed(by: disposeBag)
     }
     
     
@@ -106,10 +114,12 @@ class ViewController: UIViewController {
         scrollView.snp.makeConstraints{
             $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview()    
+            $0.height.equalTo(1200)
         }
         contentView.snp.makeConstraints{
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
+            $0.height.equalTo(1200)
         }
         topView.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -125,6 +135,7 @@ class ViewController: UIViewController {
             $0.top.equalTo(recentTransactionsHeaderView.snp.bottom).offset(30)
             $0.horizontalEdges.equalToSuperview().inset(30)
             $0.bottom.equalToSuperview()
+            
         }
         
     }
@@ -132,8 +143,12 @@ class ViewController: UIViewController {
     // MARK: Function
 
 
-
 }
+//extension ViewController: UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 51
+//    }
+//}
 
 //import SwiftUI
 //struct ViewController_Preview: PreviewProvider {

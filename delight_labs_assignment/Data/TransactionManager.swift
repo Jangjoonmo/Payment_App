@@ -17,47 +17,35 @@ class TransactionManager {
     private let realm = try! Realm()
 
     init() {}
-
-    func saveTransaction(_ transaction: TransactionData) {
-        try! realm.write {
-            print("save: \(transaction)")
-            realm.add(transaction)
-        }
-    }
-
-    func getTransactions(type: String? = nil) -> [TransactionData] {
-        let transactions: Results<TransactionData>
-
-        if let type = type {
-            transactions = realm.objects(TransactionData.self).filter("transactionType == %@", type)
-        } else {
-            transactions = realm.objects(TransactionData.self)
-        }
-        
-        return Array(transactions)
-    }
     
     func parseJSON() {
         let url = URL(fileURLWithPath: "/Users/jangjoonmo/Downloads/delightlabs-ios-hometest-mockdata-2024.json")
         do {
             let data = try Data(contentsOf: url)
             let transactions = try JSONDecoder().decode([Transaction].self, from: data)
-            for transaction in transactions {
-                let transactionData = TransactionData()
-                transactionData.name = transaction.name
-                transactionData.amount = transaction.amount
-                transactionData.timestamp = transaction.timestamp
-                transactionData.type = transaction.type
-                transactionData.transactionType = transaction.amount.hasPrefix("-") ? "expense" : "income"
-                TransactionManager.shared.saveTransaction(transactionData)
+            
+            let realm = try! Realm()
+            try! realm.write {
+                for transaction in transactions {
+                    let transactionData = TransactionData()
+                    transactionData.name = transaction.name
+                    transactionData.amount = transaction.amount
+                    transactionData.timestamp = transaction.timestamp
+                    transactionData.type = transaction.type
+                    transactionData.transactionType = transaction.amount.hasPrefix("-") ? "expense" : "income"
+                    print("transaction: \(transaction)")
+                    realm.add(transactionData)
+                }
             }
         } catch {
             print(error)
         }
     }
+
 }
 
 extension TransactionManager {
+
     func getIncomeTransactionsInPastWeek() -> [TransactionData] {
         let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
         let transactions = realm.objects(TransactionData.self).filter("timestamp >= %@ AND transactionType == 'income'", oneWeekAgo)
@@ -88,6 +76,7 @@ extension TransactionManager {
     // 최근 입출금 내역 20건
     func getLast20Transactions() -> [TransactionData] {
         let transactions = realm.objects(TransactionData.self).sorted(byKeyPath: "timestamp", ascending: false).prefix(20)
+        print(transactions.count)
         return Array(transactions)
     }
     

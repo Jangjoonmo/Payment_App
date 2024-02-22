@@ -33,41 +33,39 @@ class TableViewModel {
     
     func transform(input: Input) -> Output {
         let errorTracker = PublishSubject<Error>()
-        let allTransactions = PublishSubject<[TransactionData]>()
-        let expenseTransactions = PublishSubject<[TransactionData]>()
-        let incomeTransactions = PublishSubject<[TransactionData]>()
+        let allTransactions = BehaviorSubject(value: [TransactionData]())
+         let expenseTransactions = BehaviorSubject(value: [TransactionData]())
+         let incomeTransactions = BehaviorSubject(value: [TransactionData]())
         
         input.allTrigger
             .flatMapLatest { [weak self] _ -> Observable<[TransactionData]> in
                 guard let self = self else { return .empty() }
-                return .just(self.transactionManager.getLast20Transactions())
+                let transactions = self.transactionManager.getLast20Transactions()
+//                print("Retrieved transactions: \(transactions)")
+                return .just(transactions)
             }
             .bind(to: allTransactions)
             .disposed(by: disposeBag)
-//        
-//        input.expenseTrigger
-//            .flatMapLatest { [weak self] _ -> Observable<[TransactionData]> in
-//                guard let self = self else { return .empty() }
-//                if let transactions = self.transactionManager.fetchRecentExpenseTransactions(limit: 10) {
-//                    return .just(transactions)
-//                } else {
-//                    return .empty()
-//                }
-//            }
-//            .bind(to: expenseTransactions)
-//            .disposed(by: disposeBag)
-//        
-//        input.incomeTrigger
-//            .flatMapLatest { [weak self] _ -> Observable<[TransactionData]> in
-//                guard let self = self else { return .empty() }
-//                if let transactions = self.transactionManager.fetchRecentIncomeTransactions(limit: 10) {
-//                    return .just(transactions)
-//                } else {
-//                    return .empty()
-//                }
-//            }
-//            .bind(to: incomeTransactions)
-//            .disposed(by: disposeBag)
+        
+        input.expenseTrigger
+            .flatMapLatest { [weak self] _ -> Observable<[TransactionData]> in
+                guard let self = self else { return .empty() }
+                let transactions = self.transactionManager.getLast10ExpenseTransactions()
+//                print("Retrieved transactions: \(transactions)")
+                return .just(transactions)
+            }
+            .bind(to: expenseTransactions)
+            .disposed(by: disposeBag)
+        
+        input.incomeTrigger
+            .flatMapLatest { [weak self] _ -> Observable<[TransactionData]> in
+                guard let self = self else { return .empty() }
+                let transactions = self.transactionManager.getLast10IncomeTransactions()
+//                print("Retrieved transactions: \(transactions)")
+                return .just(transactions)
+            }
+            .bind(to: expenseTransactions)
+            .disposed(by: disposeBag)
         
         return Output(allTransactions: allTransactions.asObservable(),
                       expenseTransactions: expenseTransactions.asObservable(),
