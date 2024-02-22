@@ -6,12 +6,24 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+
+enum ButtonType {
+    case all
+    case expense
+    case income
+}
 
 class TableViewHeaderView: UITableViewHeaderFooterView {
 
     // MARK: Variables
     
     static let CellID = "TableViewHeaderView"
+    
+    private let disposeBag = DisposeBag()
+    private let selectedButtonRelay = BehaviorRelay<UIButton?>(value: nil)
+    var updateData = PublishSubject<ButtonType>()
     
     let headerLabel: UILabel = UILabel().then{
         $0.text = "Recent Transactions"
@@ -24,25 +36,26 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
     
     let allButton: UIButton = UIButton().then{
         $0.setTitle("All", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .normal)
-        $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .disabled)
-        $0.backgroundColor = .none
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .selected)
+        $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .normal)
+        $0.backgroundColor = .clear
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
     
     let expenseButton: UIButton = UIButton().then{
         $0.setTitle("Expense", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .normal)
-        $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .disabled)
-        $0.backgroundColor = .none
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .selected)
+        $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .normal)
+        $0.backgroundColor = .clear
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
     
     let incomeButton: UIButton = UIButton().then{
         $0.setTitle("Income", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .normal)
-        $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .disabled)
-        $0.backgroundColor = .none
+        $0.setTitleColor(UIColor(named: "MainColor"), for: .selected)
+        $0.setTitleColor(UIColor(hexCode: "#BDBDBD"), for: .normal)
+        $0.backgroundColor = .clear
+        $0.clipsToBounds = true
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
     
@@ -52,6 +65,7 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
         setUpView()
         setUpLayout()
         setUpConstraint()
+        setUpBindings()
     }
     
     required init?(coder: NSCoder) {
@@ -84,7 +98,7 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
         }
         
         buttonView.snp.makeConstraints{
-            $0.leading.equalTo(headerLabel)
+            $0.horizontalEdges.equalToSuperview().inset(28)
             $0.bottom.equalToSuperview().inset(30)
             $0.height.equalTo(24)
             $0.top.equalTo(headerLabel.snp.bottom).offset(30)
@@ -105,5 +119,43 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
     }
     
     // MARK: Function
+    
+//    private func setUpBindings() {
+//        allButton.rx.tap
+//            .map { _ in ButtonType.all }
+//            .subscribe(onNext: { [weak self] type in
+//                self?.updateData.onNext(type)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        expenseButton.rx.tap
+//            .map { _ in ButtonType.expense }
+//            .subscribe(onNext: { [weak self] type in
+//                self?.updateData.onNext(type)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        incomeButton.rx.tap
+//            .map { _ in ButtonType.income }
+//            .subscribe(onNext: { [weak self] type in
+//                self?.updateData.onNext(type)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//    }
+    private func setUpBindings() {
+        let buttons = [allButton, expenseButton, incomeButton]
 
+        buttons.forEach { button in
+            button.rx.tap
+                .map { button == self.allButton ? .all : (button == self.expenseButton ? .expense : .income) }
+                .do(onNext: { [weak self] _ in
+                    buttons.forEach { $0.isSelected = $0 == button }
+                })
+                .subscribe(onNext: { [weak self] type in
+                    self?.updateData.onNext(type)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
 }

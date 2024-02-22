@@ -43,12 +43,10 @@ class ViewController: UIViewController {
         setUpLayout()
         setUpConstraint()
         setUpDelegate()
-        viewModel = TableViewModel(transactionManager: transactionManager)
-
-        bindViewModel()
-        bindView()
         
-        allTrigger.onNext(())
+        viewModel = TableViewModel(transactionManager: transactionManager)
+        bindViewModel()
+//        allTrigger.onNext(())
     }
     
     func setUpDelegate() {
@@ -76,39 +74,26 @@ class ViewController: UIViewController {
     // MARK: BindViewModel
     
     private func bindViewModel() {
-        let input = TableViewModel.Input(allTrigger: allTrigger.asObservable(),
-                                         expenseTrigger: expenseTrigger.asObservable(),
-                                         incomeTrigger: incomeTrigger.asObservable())
+
+        let trigger = Observable.merge(
+            allTrigger.map { TransactionType.all },
+            expenseTrigger.map { TransactionType.expense },
+            incomeTrigger.map { TransactionType.income }
+        )
+        
+        let input = TableViewModel.Input(trigger: trigger)
         let output = viewModel.transform(input: input)
         
-        output.allTransactions
-            .do(onNext: { transactions in
-                print("바인드 전 transactions: \(transactions)")
-            })
-            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID, cellType: TransactionTableViewCell.self)) { index, model, cell in
+        output.transactions
+            .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID,
+                                         cellType: TransactionTableViewCell.self)) { index, model, cell in
                 cell.configure(model)
             }.disposed(by: disposeBag)
         
         output.error.subscribe(onNext: { error in
             print(error)
         }).disposed(by: disposeBag)
-        
     }
-    
-    private func bindView() {
-//        recentTransactionsHeaderView.allButton.rx.tap.bind { [weak self] in
-//            self?.allTrigger.onNext(Void())
-//        }.disposed(by: disposeBag)
-//        
-//        recentTransactionsHeaderView.incomeButton.rx.tap.bind { [weak self] in
-//            self?.incomeTrigger.onNext(Void())
-//        }.disposed(by: disposeBag)
-//        
-//        recentTransactionsHeaderView.expenseButton.rx.tap.bind { [weak self] in
-//            self?.expenseTrigger.onNext(Void())
-//        }.disposed(by: disposeBag)
-    }
-    
     
     // MARK: Constraint
     
@@ -149,7 +134,23 @@ extension ViewController: UITableViewDelegate {
     //헤더 등록 및 rx 바인딩
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TableViewHeaderView.CellID) as! TableViewHeaderView
-        
+        header.updateData.subscribe(onNext: { [weak self] ButtonType in
+            switch ButtonType {
+                
+            case .all:
+                print("최근 입출금 20건 버튼 클릭")
+                self?.allTrigger.onNext(())
+            case .expense:
+                print("최근 출금 10건 버튼 클릭")
+                self?.expenseTrigger.onNext(())
+            case .income:
+                print("최근 입금 10건 버튼 클릭")
+                self?.incomeTrigger.onNext(())
+            default:
+                break
+            }
+            
+        }).disposed(by: disposeBag)
         return header
     }
     
