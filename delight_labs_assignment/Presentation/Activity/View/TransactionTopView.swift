@@ -14,27 +14,39 @@ class TransactionTopView: UIView {
     //MARK: Variables
     
     let buttonView: UIView = UIView().then{
-        $0.backgroundColor = UIColor(hexCode: "F5F5F5")
+//        $0.backgroundColor = UIColor(hexCode: "F5F5F5")
+        $0.backgroundColor = .white
+
     }
 
     let weekButton: UIButton = UIButton().then{
         $0.setTitle("Week", for: .normal)
         $0.setTitleColor(.white, for: .selected)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .disabled) // #363062
+        $0.backgroundColor = UIColor(named: "MainColor") // #363062
+        $0.setTitleColor(UIColor(hexCode: "#6B6B6B"), for: .normal)
         
         $0.configuration = UIButton.Configuration.bordered()
+        
+        $0.layer.cornerRadius = 16
+        $0.clipsToBounds = true
     }
     
     let monthButton: UIButton = UIButton().then{
         $0.setTitle("Month", for: .normal)
         $0.setTitleColor(.white, for: .selected)
-        $0.setTitleColor(UIColor(named: "MainColor"), for: .disabled) // #363062
+        $0.setTitleColor(UIColor(hexCode: "#6B6B6B"), for: .normal)
+        $0.backgroundColor = UIColor(named: "MainColor")
 
         $0.configuration = UIButton.Configuration.bordered()
+        
+        $0.layer.cornerRadius = 16
+        $0.clipsToBounds = true
     }
     
     let dateLabel: UILabel = UILabel().then{
         $0.text = "MM DD, YYYY"
+        $0.font = .systemFont(ofSize: 12)
+        $0.textColor = UIColor(named: "MainColor")
         $0.sizeToFit()
     }
     
@@ -44,6 +56,8 @@ class TransactionTopView: UIView {
     
     let incomeLabel: UILabel = UILabel().then{
         $0.text = "Income"
+        $0.font = .systemFont(ofSize: 12)
+        $0.textColor = UIColor(named: "MainColor")
         $0.sizeToFit()
     }
     
@@ -53,6 +67,8 @@ class TransactionTopView: UIView {
     
     let expenseLabel: UILabel = UILabel().then{
         $0.text = "Expense"
+        $0.font = .systemFont(ofSize: 12)
+        $0.textColor = UIColor(named: "MainColor")
         $0.sizeToFit()
     }
     
@@ -83,7 +99,7 @@ class TransactionTopView: UIView {
         
         dateLabel.snp.makeConstraints{
             $0.centerY.equalTo(buttonView)
-            $0.top.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
         
         weekButton.snp.makeConstraints{
@@ -107,7 +123,7 @@ class TransactionTopView: UIView {
         
         incomeLabel.snp.makeConstraints{
             $0.leading.equalTo(incomeView.snp.trailing).offset(9)
-            $0.top.equalTo(buttonView.snp.bottom).offset(9)
+            $0.centerY.equalTo(incomeView)
         }
         
         expenseView.snp.makeConstraints{
@@ -118,7 +134,7 @@ class TransactionTopView: UIView {
         
         expenseLabel.snp.makeConstraints{
             $0.leading.equalTo(expenseView.snp.trailing).offset(9)
-            $0.top.equalTo(incomeLabel)
+            $0.centerY.equalTo(incomeLabel)
             
         }
     }
