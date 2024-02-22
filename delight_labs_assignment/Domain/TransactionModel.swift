@@ -18,7 +18,7 @@ struct Transaction: Codable {
 class TransactionData: Object {
     @objc dynamic var name = ""
     @objc dynamic var amount = ""
-    @objc dynamic var timestamp: String = ""  // Change this to String
+    @objc dynamic var timestamp: Date = Date()  // Change this to Date
     @objc dynamic var type = "" // transfer 고정
     @objc dynamic var transactionType = "" // income 또는 expense
     
@@ -27,7 +27,13 @@ class TransactionData: Object {
         
         self.name = transaction.name
         self.amount = transaction.amount
-        self.timestamp = transaction.timestamp  // Update this line
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"  
+        if let date = dateFormatter.date(from: transaction.timestamp) {
+            self.timestamp = date
+        }
+        
         self.type = transaction.type
         
         if transaction.amount.hasPrefix("-") {

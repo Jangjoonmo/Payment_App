@@ -121,16 +121,7 @@ class TransactionTableViewCell: UITableViewCell {
         
     }
 
-    private func timestampFormat(_ dateString: String) -> String {
-        // 입력 형식 설정
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-
-        // 문자열을 Date로 변환
-        guard let date = inputFormatter.date(from: dateString) else {
-            return ""
-        }
-        
+    private func timestampFormat(_ date: Date) -> String {
         // 출력 형식 설정
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "h.mm a" // 출력 형식 설정

@@ -47,6 +47,7 @@ class ViewController: UIViewController {
         viewModel = TableViewModel(transactionManager: transactionManager)
         bindViewModel()
 //        allTrigger.onNext(())
+        
     }
     
     func setUpDelegate() {

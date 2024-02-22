@@ -19,33 +19,43 @@ class TransactionManager {
     init() {}
     
     func parseJSON() {
-        let url = URL(fileURLWithPath: "/Users/jangjoonmo/Downloads/delightlabs-ios-hometest-mockdata-2024.json")
-        do {
-            let data = try Data(contentsOf: url)
-            let transactions = try JSONDecoder().decode([Transaction].self, from: data)
-            
-            let realm = try! Realm()
-            try! realm.write {
-                for transaction in transactions {
+        DispatchQueue.main.async {
+            let url = URL(fileURLWithPath: "/Users/jangjoonmo/Downloads/delightlabs-ios-hometest-mockdata-2024.json")
+            do {
+                let data = try Data(contentsOf: url)
+                let transactions = try JSONDecoder().decode([Transaction].self, from: data)
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                
+                let transactionDataList = transactions.map { transaction -> TransactionData in
                     let transactionData = TransactionData()
                     transactionData.name = transaction.name
                     transactionData.amount = transaction.amount
-                    transactionData.timestamp = transaction.timestamp
+                    if let date = dateFormatter.date(from: transaction.timestamp) {
+                        transactionData.timestamp = date
+                    }
                     transactionData.type = transaction.type
                     transactionData.transactionType = transaction.amount.hasPrefix("-") ? "expense" : "income"
-                    print("transaction: \(transaction)")
-                    realm.add(transactionData)
+                    return transactionData
                 }
+                
+                try! self.realm.write {
+                    for batch in transactionDataList.chunks(of: 1000) {  // Change this to a suitable batch size
+                        self.realm.add(batch)
+                    }
+                }
+            } catch {
+                print(error)
             }
-        } catch {
-            print(error)
         }
     }
 
 }
 
 extension TransactionManager {
-
+    
+    // 일주일치 입금 데이터
     func getIncomeTransactionsInPastWeek() -> [TransactionData] {
         let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
         let transactions = realm.objects(TransactionData.self).filter("timestamp >= %@ AND transactionType == 'income'", oneWeekAgo)
