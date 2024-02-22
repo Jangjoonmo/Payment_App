@@ -19,9 +19,9 @@ class ViewController: UIViewController {
     let loadingIndicator = UIActivityIndicatorView(style: .large)
 
     let topView = TransactionTopView()
-    let recentTransactionsHeaderView = RecentTransactionButtonView()
     lazy var tableView: UITableView = UITableView().then{
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
+        $0.register(TableViewHeaderView.self, forHeaderFooterViewReuseIdentifier: TableViewHeaderView.CellID)
         $0.isScrollEnabled = false
     }
     
@@ -41,6 +41,7 @@ class ViewController: UIViewController {
         setUpView()
         setUpLayout()
         setUpConstraint()
+        setUpDelegate()
         viewModel = TableViewModel(transactionManager: transactionManager)
 
         bindViewModel()
@@ -51,7 +52,7 @@ class ViewController: UIViewController {
     
     func setUpDelegate() {
 //        tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        tableView.delegate = nil
+        tableView.delegate = self
         tableView.dataSource = nil
     }
     
@@ -67,7 +68,7 @@ class ViewController: UIViewController {
     func setUpLayout() {
         self.view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [topView, recentTransactionsHeaderView, tableView]
+        [topView, tableView]
             .forEach{contentView.addSubview($0)}
     }
     
@@ -94,17 +95,17 @@ class ViewController: UIViewController {
     }
     
     private func bindView() {
-        recentTransactionsHeaderView.allButton.rx.tap.bind { [weak self] in
-            self?.allTrigger.onNext(Void())
-        }.disposed(by: disposeBag)
-        
-        recentTransactionsHeaderView.incomeButton.rx.tap.bind { [weak self] in
-            self?.incomeTrigger.onNext(Void())
-        }.disposed(by: disposeBag)
-        
-        recentTransactionsHeaderView.expenseButton.rx.tap.bind { [weak self] in
-            self?.expenseTrigger.onNext(Void())
-        }.disposed(by: disposeBag)
+//        recentTransactionsHeaderView.allButton.rx.tap.bind { [weak self] in
+//            self?.allTrigger.onNext(Void())
+//        }.disposed(by: disposeBag)
+//        
+//        recentTransactionsHeaderView.incomeButton.rx.tap.bind { [weak self] in
+//            self?.incomeTrigger.onNext(Void())
+//        }.disposed(by: disposeBag)
+//        
+//        recentTransactionsHeaderView.expenseButton.rx.tap.bind { [weak self] in
+//            self?.expenseTrigger.onNext(Void())
+//        }.disposed(by: disposeBag)
     }
     
     
@@ -114,28 +115,23 @@ class ViewController: UIViewController {
         scrollView.snp.makeConstraints{
             $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview()    
-            $0.height.equalTo(1200)
         }
         contentView.snp.makeConstraints{
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.height.equalTo(1200)
         }
         topView.snp.makeConstraints{
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(28)
             $0.height.equalTo(66)
         }
-        recentTransactionsHeaderView.snp.makeConstraints{
-            $0.top.equalTo(topView.snp.bottom).offset(30)   // Fix
-            $0.horizontalEdges.equalToSuperview().inset(30)
-            $0.height.equalTo(81)
-        }
+
         tableView.snp.makeConstraints{
-            $0.top.equalTo(recentTransactionsHeaderView.snp.bottom).offset(30)
+            $0.top.equalTo(topView.snp.bottom).offset(30)
             $0.horizontalEdges.equalToSuperview().inset(30)
             $0.bottom.equalToSuperview()
-            
+            $0.height.equalTo(1200)
+
         }
         
     }
@@ -144,11 +140,18 @@ class ViewController: UIViewController {
 
 
 }
-//extension ViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 51
-//    }
-//}
+extension ViewController: UITableViewDelegate {
+    //헤더 등록 및 rx 바인딩
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TableViewHeaderView.CellID) as! TableViewHeaderView
+        
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 81
+    }
+}
 
 //import SwiftUI
 //struct ViewController_Preview: PreviewProvider {

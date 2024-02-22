@@ -7,11 +7,11 @@
 
 import UIKit
 
-class RecentTransactionButtonView: UIView {
+class TableViewHeaderView: UITableViewHeaderFooterView {
 
     // MARK: Variables
     
-    static let id = "RecentTransactionButtonView"
+    static let CellID = "TableViewHeaderView"
     
     let headerLabel: UILabel = UILabel().then{
         $0.text = "Recent Transactions"
@@ -46,8 +46,9 @@ class RecentTransactionButtonView: UIView {
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        
         setUpView()
         setUpLayout()
         setUpConstraint()
