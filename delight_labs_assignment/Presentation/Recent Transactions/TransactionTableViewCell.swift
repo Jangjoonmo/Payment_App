@@ -35,7 +35,7 @@ class TransactionTableViewCell: UITableViewCell {
     
     var amountLabel: UILabel = UILabel().then{
         $0.text = "+$432.9"
-        $0.font = .systemFont(ofSize: 16, weight: .heavy)
+        $0.font = .systemFont(ofSize: 16, weight: .bold)
         $0.textColor = UIColor(named: "MainColor")
         $0.textAlignment = .right
         $0.sizeToFit()
@@ -55,6 +55,13 @@ class TransactionTableViewCell: UITableViewCell {
         setUpView()
         setUpLayout()
         setUpConstraint()
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0))
     }
     
     // MARK: View
@@ -67,38 +74,37 @@ class TransactionTableViewCell: UITableViewCell {
     
     private func setUpLayout() {
         [ symbolImageView, nameLabel, typeLabel, amountLabel, timeStampLabel ]
-            .forEach{ self.contentView.addSubview($0)}
+            .forEach{ contentView.addSubview($0)}
     }
     
     
     // MARK: Constraint
     
     private func setUpConstraint() {
-        contentView.snp.makeConstraints{
-            $0.height.equalTo(51)
-        }
+
         symbolImageView.snp.makeConstraints{
-            $0.size.equalTo(51)
-            $0.leading.top.bottom.equalToSuperview()
+            $0.width.equalTo(51)
+            $0.top.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().offset(28)
         }
         nameLabel.snp.makeConstraints{
-            $0.leading.equalTo(symbolImageView.snp.trailing).offset(20)
-            $0.height.equalTo(24)
+            $0.leading.equalTo(symbolImageView.snp.trailing).offset(28)
+            $0.trailing.equalTo(amountLabel.snp.leading).offset(1)
             $0.top.equalToSuperview().inset(2.5)
         }
         typeLabel.snp.makeConstraints{
             $0.leading.equalTo(nameLabel)
-            $0.height.equalTo(21)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(2.5)
             $0.top.equalTo(nameLabel.snp.bottom).offset(1)
         }
         amountLabel.snp.makeConstraints{
             $0.centerY.equalTo(nameLabel)
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(28)
         }
         timeStampLabel.snp.makeConstraints{
-            $0.centerY.equalTo(typeLabel)
-            $0.trailing.equalToSuperview()
+            $0.bottom.equalTo(typeLabel)
+            $0.trailing.equalTo(amountLabel)
+            $0.top.equalTo(typeLabel)
         }
     }
     
@@ -112,13 +118,14 @@ class TransactionTableViewCell: UITableViewCell {
         let amountToString = String(format: "%.1f", abs(amount)) // 절댓값으로 변환
         amountLabel.text = amount < 0 ? "-$\(amountToString)" : "+$\(amountToString)"
         timeStampLabel.text = timestampFormat(transaction.timestamp)
+        
     }
 
     private func timestampFormat(_ dateString: String) -> String {
         // 입력 형식 설정
         let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "your_input_date_format_here"
-        
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
         // 문자열을 Date로 변환
         guard let date = inputFormatter.date(from: dateString) else {
             return ""

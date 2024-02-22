@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
         $0.register(TableViewHeaderView.self, forHeaderFooterViewReuseIdentifier: TableViewHeaderView.CellID)
         $0.isScrollEnabled = false
+        $0.separatorStyle = .none
     }
     
     
@@ -128,7 +129,7 @@ class ViewController: UIViewController {
 
         tableView.snp.makeConstraints{
             $0.top.equalTo(topView.snp.bottom).offset(30)
-            $0.horizontalEdges.equalToSuperview().inset(30)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.height.equalTo(1200)
 
@@ -141,6 +142,10 @@ class ViewController: UIViewController {
 
 }
 extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 71
+    }
+    
     //헤더 등록 및 rx 바인딩
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TableViewHeaderView.CellID) as! TableViewHeaderView
@@ -149,8 +154,10 @@ extension ViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 81
+        return 111
     }
+    
+    
 }
 
 //import SwiftUI

@@ -79,12 +79,13 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
     func setUpConstraint() {
         headerLabel.snp.makeConstraints{
             $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview()
+            $0.leading.equalToSuperview().offset(28)
             $0.height.equalTo(27)
         }
         
         buttonView.snp.makeConstraints{
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.leading.equalTo(headerLabel)
+            $0.bottom.equalToSuperview().inset(30)
             $0.height.equalTo(24)
             $0.top.equalTo(headerLabel.snp.bottom).offset(30)
         }
