@@ -20,12 +20,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         
-        let mainVC = ViewController()
+        let bookingVC = BookingViewController()
+        let cardVC = CardViewController()
+        let activityVC = ActivityViewController()
+        let profileVC = ProfileViewController()
         
         self.window?.rootViewController = tabBarController
         
-        mainVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "activity"), tag: 0)
-        tabBarController.viewControllers = [mainVC]
+        bookingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "dash"), tag: 0)
+        cardVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "card"), tag: 1)
+        activityVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "activity"), tag: 2)
+        profileVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "user"), tag: 3)
+        
+        tabBarController.viewControllers = [bookingVC, cardVC, activityVC, profileVC]
+        
         tabBarController.tabBar.backgroundColor = .white
         tabBarController.tabBar.tintColor = UIColor(named: "MainColor")
         

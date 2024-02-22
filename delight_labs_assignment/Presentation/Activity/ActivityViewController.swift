@@ -11,7 +11,7 @@ import RxCocoa
 import RealmSwift
 import SwiftUI
 
-class ViewController: UIViewController {
+class ActivityViewController: UIViewController {
 
     // MARK: Variables
     
@@ -164,7 +164,7 @@ class ViewController: UIViewController {
 
 
 }
-extension ViewController: UITableViewDelegate {
+extension ActivityViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 71
     }
