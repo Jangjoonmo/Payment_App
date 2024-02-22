@@ -11,79 +11,37 @@ import RxCocoa
 
 struct ContentView: View {
     @StateObject var viewModel = LineChartViewModel()
+    
+    @State var incomeData: [Double] = []
+    @State var expenseData: [Double] = []
 
     var body: some View {
         VStack {
-            LineChartView(data: viewModel.incomeData, lineColor: .green)
-            LineChartView(data: viewModel.expenseData, lineColor: .blue)
+            LineChartView(incomeData: viewModel.incomeData, expenseData: viewModel.expenseData, incomeColor: Color(uiColor: UIColor(named: "GreenColor")!), expenseColor: Color(uiColor: UIColor(named: "MainColor")!))
+//            LineChartView(data: viewModel.expenseData, lineColor: .blue)
         }
     }
 }
 
+
 struct LineChartView: View {
-    var data: [Double]
-    var lineColor: Color
+    var incomeData: [Double]
+    var expenseData: [Double]
+    var incomeColor: Color
+    var expenseColor: Color
+
+    var minY: Double { min(incomeData.min() ?? 0, expenseData.min() ?? 0) }
+    var maxY: Double { max(incomeData.max() ?? 1, expenseData.max() ?? 1) }
     
-    var minY: Double { data.min() ?? 0 }
-    var maxY: Double { data.max() ?? 1 }
-    
+    // endPoint는 애니메이션에 사용되므로 두 개의 데이터 세트 모두에 대해 동일하게 적용됩니다.
     @State private var endPoint: CGFloat = .zero
-    
-    var curGradient: LinearGradient {
-        LinearGradient(
-            gradient: Gradient(
-                colors: [
-                    lineColor.opacity(0.5),
-                    lineColor.opacity(0.2),
-                    lineColor.opacity(0.05)
-                ]
-            ),
-            startPoint: .top,
-            endPoint: .bottom
-        )
-    }
-    
+
     var body: some View {
         VStack {
             GeometryReader { geometry in
                 ZStack {
-                    
-                    Path { path in
-                        for i in data.indices {
-                            let xPosition = geometry.size.width / Double(data.count - 1) * Double(i)
-                            let yPosition = (1 - (data[i] - minY) / (maxY - minY)) * Double(geometry.size.height)
-                            let point = CGPoint(x: xPosition, y: yPosition)
-                            
-                            if i == 0 {
-                                path.move(to: CGPoint(x: point.x, y: geometry.size.height))
-                                path.addLine(to: point)
-                            } else {
-                                path.addLine(to: point)
-                            }
-                            
-                            if i == data.indices.last {
-                                path.addLine(to: CGPoint(x: geometry.size.width, y: geometry.size.height))
-                            }
-                        }
-                    }
-                    .fill(curGradient)
-                    
-                    
-                    Path { path in
-                        for i in data.indices {
-                            let xPosition = geometry.size.width / Double(data.count - 1) * Double(i)
-                            let yPosition = (1 - (data[i] - minY) / (maxY - minY)) * Double(geometry.size.height)
-                            let point = CGPoint(x: xPosition, y: yPosition)
-                            
-                            if i == 0 {
-                                path.move(to: point)
-                            } else {
-                                path.addLine(to: point)
-                            }
-                        }
-                    }
-                    .trim(from: 0, to: endPoint)
-                    .stroke(lineColor, lineWidth: 2)
+                    createPath(data: incomeData, geometry: geometry, lineColor: incomeColor)
+                    createPath(data: expenseData, geometry: geometry, lineColor: expenseColor)
                 }
             }
             .onAppear {
@@ -98,8 +56,62 @@ struct LineChartView: View {
             }
         }
     }
-    
-    private var dateFormatter: DateFormatter {
+
+    func createPath(data: [Double], geometry: GeometryProxy, lineColor: Color) -> some View {
+        ZStack {
+            Path { path in
+                for i in data.indices {
+                    let xPosition = geometry.size.width / Double(data.count - 1) * Double(i)
+                    let yPosition = (1 - (data[i] - minY) / (maxY - minY)) * Double(geometry.size.height)
+                    let point = CGPoint(x: xPosition, y: yPosition)
+                    
+                    if i == 0 {
+                        path.move(to: CGPoint(x: point.x, y: geometry.size.height))
+                        path.addLine(to: point)
+                    } else {
+                        path.addLine(to: point)
+                    }
+                    
+                    if i == data.indices.last {
+                        path.addLine(to: CGPoint(x: geometry.size.width, y: geometry.size.height))
+                    }
+                }
+            }
+            .fill(curGradient(lineColor: lineColor))
+
+            Path { path in
+                for i in data.indices {
+                    let xPosition = geometry.size.width / Double(data.count - 1) * Double(i)
+                    let yPosition = (1 - (data[i] - minY) / (maxY - minY)) * Double(geometry.size.height)
+                    let point = CGPoint(x: xPosition, y: yPosition)
+                    
+                    if i == 0 {
+                        path.move(to: point)
+                    } else {
+                        path.addLine(to: point)
+                    }
+                }
+            }
+            .trim(from: 0, to: endPoint)
+            .stroke(lineColor, lineWidth: 2)
+        }
+    }
+
+    func curGradient(lineColor: Color) -> LinearGradient {
+        LinearGradient(
+            gradient: Gradient(
+                colors: [
+                    lineColor.opacity(0.5),
+                    lineColor.opacity(0.2),
+                    lineColor.opacity(0.05)
+                ]
+            ),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d"
         return formatter

@@ -8,10 +8,14 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
 
 class TransactionTopView: UIView {
     
     //MARK: Variables
+    
+    let viewModel = LineChartViewModel()
+    let disposeBag = DisposeBag()
     
     let buttonView: UIView = UIView().then{
 //        $0.backgroundColor = UIColor(hexCode: "F5F5F5")
@@ -77,6 +81,7 @@ class TransactionTopView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
+        bindViewModel()
     }
     
     
@@ -137,6 +142,30 @@ class TransactionTopView: UIView {
             $0.centerY.equalTo(incomeLabel)
             
         }
+    }
+    
+    // MARK: BindViewModel
+    
+    private func bindViewModel() {
+        weekButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self, !self.weekButton.isSelected else { return }
+                self.weekButton.isSelected = true
+                self.monthButton.isSelected = false
+                self.monthButton.backgroundColor = UIColor(hexCode: "#F5F5F5")
+                self.viewModel.fetchTransactions(period: 7)
+            })
+            .disposed(by: disposeBag)
+        
+        monthButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self, !self.monthButton.isSelected else { return }
+                self.monthButton.isSelected = true
+                self.weekButton.isSelected = false
+                self.weekButton.backgroundColor = UIColor(hexCode: "#F5F5F5")
+                self.viewModel.fetchTransactions(period: 30)
+            })
+            .disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {

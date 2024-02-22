@@ -29,43 +29,56 @@ class LineChartViewModel: ObservableObject {
     }
     
     init() {
-        fetchTransactions()
+        fetchTransactions(period: 7)
     }
     
-    private func fetchTransactions() {
-        let incomeTransactions = TransactionManager.shared.getIncomeTransactionsInPastWeek()
-        let expenseTransactions = TransactionManager.shared.getExpenseTransactionsInPastWeek()
-
+    func fetchTransactions(period: Int) {
+        let incomeTransactions: [DateComponents: [TransactionData]]
+        let expenseTransactions: [DateComponents: [TransactionData]]
+        
+        var interval: Int
+        
+        if period == 7 {
+            incomeTransactions = TransactionManager.shared.getIncomeTransactionsInPastWeek()
+            expenseTransactions = TransactionManager.shared.getExpenseTransactionsInPastWeek()
+            interval = 1
+        } else { // 30일
+            incomeTransactions = TransactionManager.shared.getIncomeTransactionsInPastMonth()
+            expenseTransactions = TransactionManager.shared.getExpenseTransactionsInPastMonth()
+            interval = 3
+        }
+        
         var incomeValues: [Double] = []
         var expenseValues: [Double] = []
-
-        for i in 0..<7 {
+        
+        for i in 0..<period {
             let date = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
             var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: date)
-            dateComponents.hour = 0
-            dateComponents.minute = 0
-            dateComponents.second = 0
-            dateComponents.nanosecond = 0
+            
+            for hour in stride(from: 0, to: 24, by: interval) {
+                dateComponents.hour = hour
+                dateComponents.minute = 0
+                dateComponents.second = 0
+                dateComponents.nanosecond = 0
 
-            if let dailyIncomeTransactions = incomeTransactions[dateComponents] {
-                let dailyIncome = dailyIncomeTransactions.reduce(0) { $0 + Double($1.amount)! }
-                incomeValues.append(dailyIncome)
-            }
+                if let transactions = incomeTransactions[dateComponents], !transactions.isEmpty {
+                    let income = Double(transactions[0].amount)?.rounded(toPlaces: 1) ?? 0.0
+                    incomeValues.append(income)
+                }
 
-            if let dailyExpenseTransactions = expenseTransactions[dateComponents] {
-                let dailyExpense = dailyExpenseTransactions.reduce(0) { $0 + abs(Double($1.amount)!) }
-                expenseValues.append(dailyExpense)
+                if let transactions = expenseTransactions[dateComponents], !transactions.isEmpty {
+                    let expense = abs(Double(transactions[0].amount)?.rounded(toPlaces: 1) ?? 0.0)
+                    expenseValues.append(expense)
+                }
             }
         }
 
         
         incomeData = incomeValues
         expenseData = expenseValues
-
         
         incomeSubject.onNext(incomeValues)
         expenseSubject.onNext(expenseValues)
     }
-
 
 }

@@ -51,8 +51,7 @@ class TransactionData: Object {
 
 extension TransactionData {
     var dateComponents: DateComponents {
-        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: timestamp)
-        dateComponents.hour = 0
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour], from: timestamp)
         dateComponents.minute = 0
         dateComponents.second = 0
         dateComponents.nanosecond = 0

@@ -120,29 +120,6 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
     
     // MARK: Function
     
-//    private func setUpBindings() {
-//        allButton.rx.tap
-//            .map { _ in ButtonType.all }
-//            .subscribe(onNext: { [weak self] type in
-//                self?.updateData.onNext(type)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        expenseButton.rx.tap
-//            .map { _ in ButtonType.expense }
-//            .subscribe(onNext: { [weak self] type in
-//                self?.updateData.onNext(type)
-//            })
-//            .disposed(by: disposeBag)
-//
-//        incomeButton.rx.tap
-//            .map { _ in ButtonType.income }
-//            .subscribe(onNext: { [weak self] type in
-//                self?.updateData.onNext(type)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//    }
     private func setUpBindings() {
         let buttons = [allButton, expenseButton, incomeButton]
 

@@ -32,7 +32,7 @@ class ActivityViewController: UIViewController {
     var chartViewModel: LineChartViewModel!
     
     let transactionManager = TransactionManager()
-    var viewModel: TableViewModel!
+    var tableViewModel: TableViewModel!
     let allTrigger = PublishSubject<Void>()
     let expenseTrigger = PublishSubject<Void>()
     let incomeTrigger = PublishSubject<Void>()
@@ -47,7 +47,7 @@ class ActivityViewController: UIViewController {
 
         setUpDelegate()
         
-        viewModel = TableViewModel(transactionManager: transactionManager)
+        tableViewModel = TableViewModel(transactionManager: transactionManager)
         
         chartViewModel = LineChartViewModel()
         let contentView = ContentView(viewModel: self.chartViewModel)
@@ -68,7 +68,6 @@ class ActivityViewController: UIViewController {
     }
     
     func setUpDelegate() {
-//        tableView.rx.setDelegate(self).disposed(by: disposeBag)
         tableView.delegate = self
         tableView.dataSource = nil
     }
@@ -138,7 +137,7 @@ class ActivityViewController: UIViewController {
         )
         
         let input = TableViewModel.Input(trigger: trigger)
-        let output = viewModel.transform(input: input)
+        let output = tableViewModel.transform(input: input)
         
         output.transactions
             .bind(to: tableView.rx.items(cellIdentifier: TransactionTableViewCell.cellID,
@@ -151,16 +150,21 @@ class ActivityViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         
-        // 차트뷰모델 바인딩
-//        let chartInput = ChartViewModel.Input()
-//        let chartOutput = chartViewModel.transform(input: chartInput)
+        // ChartViewModel 바인딩
         
-//        chartOutput.chartData
-//            .observeOn(MainScheduler.instance)
-//            .subscribe(onNext: { [weak self] chartData in
-//                self?.chartView.lineChartView.data = chartData
-//                self?.chartView.lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-//            }).disposed(by: disposeBag)
+        chartViewModel.incomeObservable
+            .subscribe(onNext: { [weak self] incomeData in
+                print("Income data: \(incomeData)")
+                self?.chartView.rootView.incomeData = incomeData
+            })
+            .disposed(by: disposeBag)
+        
+        chartViewModel.expenseObservable
+            .subscribe(onNext: { [weak self] expenseData in
+                print("Expense data: \(expenseData)")
+                self?.chartView.rootView.expenseData = expenseData
+            })
+            .disposed(by: disposeBag)
         
     }
     
