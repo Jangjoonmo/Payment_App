@@ -26,6 +26,7 @@ class ViewController: UIViewController {
         $0.separatorStyle = .none
     }
     let chartView = ChartView()
+    var chartViewModel: ChartViewModel!
     
     let transactionManager = TransactionManager()
     var viewModel: TableViewModel!
@@ -45,8 +46,10 @@ class ViewController: UIViewController {
         setUpDelegate()
         
         viewModel = TableViewModel(transactionManager: transactionManager)
+        chartViewModel = ChartViewModel()
         bindViewModel()
 //        allTrigger.onNext(())
+//        transactionManager.parseJSON()
         
     }
     
@@ -91,13 +94,12 @@ class ViewController: UIViewController {
         
         chartView.snp.makeConstraints{
             $0.top.equalTo(topView.snp.bottom).offset(47)
-            $0.horizontalEdges.equalToSuperview().inset(30)
-            $0.bottom.equalTo(tableView.snp.top).inset(40)
-            $0.height.equalTo(232)
+            $0.horizontalEdges.equalToSuperview().inset(28)
+            $0.height.equalTo(500)
         }
         
         tableView.snp.makeConstraints{
-            $0.top.equalTo(topView.snp.bottom).offset(30)
+            $0.top.equalTo(chartView.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.height.equalTo(1200)
@@ -128,6 +130,19 @@ class ViewController: UIViewController {
         output.error.subscribe(onNext: { error in
             print(error)
         }).disposed(by: disposeBag)
+        
+        
+        // 차트뷰모델 바인딩
+        let chartInput = ChartViewModel.Input()
+        let chartOutput = chartViewModel.transform(input: chartInput)
+        
+//        chartOutput.chartData
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] chartData in
+//                self?.chartView.lineChartView.data = chartData
+//                self?.chartView.lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+//            }).disposed(by: disposeBag)
+        
     }
     
 
@@ -156,8 +171,6 @@ extension ViewController: UITableViewDelegate {
             case .income:
                 print("최근 입금 10건 버튼 클릭")
                 self?.incomeTrigger.onNext(())
-            default:
-                break
             }
             
         }).disposed(by: disposeBag)

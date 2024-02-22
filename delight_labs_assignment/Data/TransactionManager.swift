@@ -56,17 +56,22 @@ class TransactionManager {
 extension TransactionManager {
     
     // 일주일치 입금 데이터
-    func getIncomeTransactionsInPastWeek() -> [TransactionData] {
+    func getIncomeTransactionsInPastWeek() -> [DateComponents: [TransactionData]] {
+        print("일주일치 입금 데이터 트랜잭션 매니저 실행")
         let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
         let transactions = realm.objects(TransactionData.self).filter("timestamp >= %@ AND transactionType == 'income'", oneWeekAgo)
-        return Array(transactions)
+        let groupedTransactions = Dictionary(grouping: Array(transactions), by: { $0.dateComponents })
+        return groupedTransactions
     }
-    
+
     // 일주일치 출금 데이터
-    func getExpenseTransactionsInPastWeek() -> [TransactionData] {
+    func getExpenseTransactionsInPastWeek() -> [DateComponents: [TransactionData]] {
+        print("일주일치 출금 데이터 트랜잭션 매니저 실행")
         let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
         let transactions = realm.objects(TransactionData.self).filter("timestamp >= %@ AND transactionType == 'expense'", oneWeekAgo)
-        return Array(transactions)
+        let groupedTransactions = Dictionary(grouping: Array(transactions), by: { $0.dateComponents })
+        print("일주일치 출금 데이터 트랜잭션 매니저 완료")
+        return groupedTransactions
     }
     
     // 한달치 입금 데이터
@@ -85,20 +90,27 @@ extension TransactionManager {
     
     // 최근 입출금 내역 20건
     func getLast20Transactions() -> [TransactionData] {
-        let transactions = realm.objects(TransactionData.self).sorted(byKeyPath: "timestamp", ascending: false).prefix(20)
-        print(transactions.count)
+        let transactions = realm.objects(TransactionData.self)
+            .sorted(byKeyPath: "timestamp", ascending: false)
+            .prefix(20)
         return Array(transactions)
     }
     
     // 최근 출금 내역 10건
     func getLast10ExpenseTransactions() -> [TransactionData] {
-        let transactions = realm.objects(TransactionData.self).filter("transactionType == 'expense'").sorted(byKeyPath: "timestamp", ascending: false).prefix(10)
+        let transactions = realm.objects(TransactionData.self)
+            .filter("transactionType == 'expense'")
+            .sorted(byKeyPath: "timestamp", ascending: false)
+            .prefix(10)
         return Array(transactions)
     }
     
     // 최근 입금 내역 10건
     func getLast10IncomeTransactions() -> [TransactionData] {
-        let transactions = realm.objects(TransactionData.self).filter("transactionType == 'income'").sorted(byKeyPath: "timestamp", ascending: false).prefix(10)
+        let transactions = realm.objects(TransactionData.self)
+            .filter("transactionType == 'income'")
+            .sorted(byKeyPath: "timestamp", ascending: false)
+            .prefix(10)
         return Array(transactions)
     }
 }

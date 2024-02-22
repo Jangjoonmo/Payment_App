@@ -26,9 +26,9 @@ class ChartView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        chartViewModel = ChartViewModel()
-//        setupLineChartView()
-//        bindViewModel()
+        chartViewModel = ChartViewModel()
+        setupLineChartView()
+        bindViewModel()
     }
     
     private func setupLineChartView() {
@@ -41,11 +41,15 @@ class ChartView: UIView {
         let input = ChartViewModel.Input()
         let output = chartViewModel.transform(input: input)
         
-        output.chartData.subscribe(onNext: { [weak self] chartData in
-            self?.lineChartView.data = chartData
-            self?.lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-        }).disposed(by: disposeBag)
+        output.chartData
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] chartData in
+                self?.lineChartView.data = chartData
+                print(chartData)
+                self?.lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+            }).disposed(by: disposeBag)
     }
+
 }
 
 extension Date {

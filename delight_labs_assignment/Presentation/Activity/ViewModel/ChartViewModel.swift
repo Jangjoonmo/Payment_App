@@ -37,15 +37,26 @@ class ChartViewModel {
             
             for i in 0..<7 {
                 let date = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-                
-                let dailyIncomeTransactions = incomeTransactions.filter { $0.timestamp.startOfDay() == date.startOfDay() }
-                let dailyIncome = dailyIncomeTransactions.reduce(0) { $0 + Double($1.amount)! }
-                incomeDataEntries.append(ChartDataEntry(x: Double(i), y: dailyIncome))
-                
-                let dailyExpenseTransactions = expenseTransactions.filter { $0.timestamp.startOfDay() == date.startOfDay() }
-                let dailyExpense = dailyExpenseTransactions.reduce(0) { $0 + Double($1.amount)! }
-                expenseDataEntries.append(ChartDataEntry(x: Double(i), y: dailyExpense))
+                var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: date)
+                dateComponents.hour = 0
+                dateComponents.minute = 0
+                dateComponents.second = 0
+                dateComponents.nanosecond = 0
+
+                if let dailyIncomeTransactions = incomeTransactions[dateComponents] {
+                    let dailyIncome = dailyIncomeTransactions.reduce(0) { $0 + Double($1.amount)! }
+                    incomeDataEntries.append(ChartDataEntry(x: date.timeIntervalSince1970, y: dailyIncome))
+                }
+
+                if let dailyExpenseTransactions = expenseTransactions[dateComponents] {
+                    let dailyExpense = dailyExpenseTransactions.reduce(0) { $0 + Double($1.amount)! }
+                    expenseDataEntries.append(ChartDataEntry(x: date.timeIntervalSince1970, y: dailyExpense))
+                }
             }
+
+            
+            print("Income Data Entries: \(incomeDataEntries)") 
+            print("Expense Data Entries: \(expenseDataEntries)")
             
             let incomeDataSet = LineChartDataSet(entries: incomeDataEntries, label: "Income")
             incomeDataSet.colors = [NSUIColor.green]
@@ -60,5 +71,6 @@ class ChartViewModel {
             return Disposables.create {}
         }
     }
+
 
 }

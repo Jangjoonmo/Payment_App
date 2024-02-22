@@ -18,9 +18,14 @@ struct Transaction: Codable {
 class TransactionData: Object {
     @objc dynamic var name = ""
     @objc dynamic var amount = ""
-    @objc dynamic var timestamp: Date = Date()  // Change this to Date
+    @objc dynamic var timestamp: Date = Date()
     @objc dynamic var type = "" // transfer 고정
     @objc dynamic var transactionType = "" // income 또는 expense
+
+    
+    override static func indexedProperties() -> [String] {
+        return ["timestamp", "transactionType"]
+    }
     
     convenience init(from transaction: Transaction) {
         self.init()
@@ -44,3 +49,13 @@ class TransactionData: Object {
     }
 }
 
+extension TransactionData {
+    var dateComponents: DateComponents {
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: timestamp)
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        dateComponents.second = 0
+        dateComponents.nanosecond = 0
+        return dateComponents
+    }
+}
