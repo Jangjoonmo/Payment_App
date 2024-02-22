@@ -19,6 +19,7 @@ class ActivityViewController: UIViewController {
     let contentView = UIView() // 스크롤 뷰 안의 콘텐츠 뷰 추가
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     
+    let topBar = TransactionTopBarView()
     let topView = TransactionTopView()
     lazy var tableView: UITableView = UITableView().then{
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
@@ -84,7 +85,7 @@ class ActivityViewController: UIViewController {
     func setUpLayout() {
         self.view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [topView, chartView.view, tableView]
+        [topBar, topView, chartView.view, tableView]
             .forEach{contentView.addSubview($0)}
     }
     
@@ -99,8 +100,13 @@ class ActivityViewController: UIViewController {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
         }
-        topView.snp.makeConstraints{
+        topBar.snp.makeConstraints{
             $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(36)
+        }
+        topView.snp.makeConstraints{
+            $0.top.equalTo(topBar.snp.bottom).offset(30)
             $0.horizontalEdges.equalToSuperview().inset(28)
             $0.height.equalTo(66)
         }
@@ -161,7 +167,11 @@ class ActivityViewController: UIViewController {
 
     
     // MARK: Function
-
+    
+    @objc func notificationTapped() {
+        print("알림 버튼 클릭")
+        
+    }
 
 }
 extension ActivityViewController: UITableViewDelegate {

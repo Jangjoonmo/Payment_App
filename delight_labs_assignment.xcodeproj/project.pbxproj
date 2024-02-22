@@ -34,6 +34,7 @@
 		9435A3332B87DEF10009CE29 /* BookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3322B87DEF10009CE29 /* BookingViewController.swift */; };
 		9435A3352B87DEFB0009CE29 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3342B87DEFB0009CE29 /* CardViewController.swift */; };
 		9435A3372B87DF070009CE29 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3362B87DF070009CE29 /* ProfileViewController.swift */; };
+		9435A3392B87E6240009CE29 /* TransactionTopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435A3382B87E6240009CE29 /* TransactionTopBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		9435A3322B87DEF10009CE29 /* BookingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingViewController.swift; sourceTree = "<group>"; };
 		9435A3342B87DEFB0009CE29 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		9435A3362B87DF070009CE29 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9435A3382B87E6240009CE29 /* TransactionTopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTopBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 		9435A3142B862A7D0009CE29 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9435A3382B87E6240009CE29 /* TransactionTopBarView.swift */,
 				9435A2FB2B85FB8F0009CE29 /* TransactionTopView.swift */,
 				9435A3152B862AC20009CE29 /* TableViewHeaderView.swift */,
 			);
@@ -314,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9435A3162B862AC20009CE29 /* TableViewHeaderView.swift in Sources */,
+				9435A3392B87E6240009CE29 /* TransactionTopBarView.swift in Sources */,
 				9435A30E2B861E7B0009CE29 /* TransactionModel.swift in Sources */,
 				9435A32E2B87C7E30009CE29 /* LineChartView.swift in Sources */,
 				9435A2DC2B85F7740009CE29 /* ActivityViewController.swift in Sources */,
