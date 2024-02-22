@@ -18,7 +18,7 @@ class TransactionManager {
 
     init() {}
     
-    func parseJSON() {
+    func parseJSON() {  //Json Mock 데이터 받아와서 Realm에 저장
         DispatchQueue.main.async {
             let url = URL(fileURLWithPath: "/Users/jangjoonmo/Downloads/delightlabs-ios-hometest-mockdata-2024.json")
             do {
@@ -41,7 +41,7 @@ class TransactionManager {
                 }
                 
                 try! self.realm.write {
-                    for batch in transactionDataList.chunks(of: 1000) {  // Change this to a suitable batch size
+                    for batch in transactionDataList.chunks(of: 1000) {  // 1000개씩 받아와서 저장
                         self.realm.add(batch)
                     }
                 }
@@ -61,6 +61,7 @@ extension TransactionManager {
         let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
         let transactions = realm.objects(TransactionData.self).filter("timestamp >= %@ AND transactionType == 'income'", oneWeekAgo)
         let groupedTransactions = Dictionary(grouping: Array(transactions), by: { $0.dateComponents })
+        print("일주일치 입금 데이터 트랜잭션 매니저 완료")
         return groupedTransactions
     }
 

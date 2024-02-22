@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RealmSwift
+import SwiftUI
 
 class ViewController: UIViewController {
 
@@ -25,8 +26,9 @@ class ViewController: UIViewController {
         $0.isScrollEnabled = false
         $0.separatorStyle = .none
     }
-    let chartView = ChartView()
-    var chartViewModel: ChartViewModel!
+
+    var chartView: UIHostingController<ContentView>!
+    var chartViewModel: LineChartViewModel!
     
     let transactionManager = TransactionManager()
     var viewModel: TableViewModel!
@@ -41,12 +43,23 @@ class ViewController: UIViewController {
         super.viewDidLoad()
   
         setUpView()
-        setUpLayout()
-        setUpConstraint()
+
         setUpDelegate()
         
         viewModel = TableViewModel(transactionManager: transactionManager)
-        chartViewModel = ChartViewModel()
+        
+        chartViewModel = LineChartViewModel()
+        let contentView = ContentView(viewModel: self.chartViewModel)
+        self.chartView = UIHostingController(rootView: contentView)
+
+        addChild(chartView)
+        self.contentView.addSubview(chartView.view)
+        chartView.didMove(toParent: self)
+        
+        
+        setUpLayout()
+        setUpConstraint()
+        
         bindViewModel()
 //        allTrigger.onNext(())
 //        transactionManager.parseJSON()
@@ -71,7 +84,7 @@ class ViewController: UIViewController {
     func setUpLayout() {
         self.view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [topView, chartView, tableView]
+        [topView, chartView.view, tableView]
             .forEach{contentView.addSubview($0)}
     }
     
@@ -92,14 +105,14 @@ class ViewController: UIViewController {
             $0.height.equalTo(66)
         }
         
-        chartView.snp.makeConstraints{
+        chartView.view.snp.makeConstraints{
             $0.top.equalTo(topView.snp.bottom).offset(47)
             $0.horizontalEdges.equalToSuperview().inset(28)
-            $0.height.equalTo(500)
+            $0.height.equalTo(232)
         }
         
         tableView.snp.makeConstraints{
-            $0.top.equalTo(chartView.snp.bottom).offset(40)
+            $0.top.equalTo(chartView.view.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.height.equalTo(1200)
@@ -133,8 +146,8 @@ class ViewController: UIViewController {
         
         
         // 차트뷰모델 바인딩
-        let chartInput = ChartViewModel.Input()
-        let chartOutput = chartViewModel.transform(input: chartInput)
+//        let chartInput = ChartViewModel.Input()
+//        let chartOutput = chartViewModel.transform(input: chartInput)
         
 //        chartOutput.chartData
 //            .observeOn(MainScheduler.instance)
