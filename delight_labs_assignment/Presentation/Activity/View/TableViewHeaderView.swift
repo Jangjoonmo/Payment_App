@@ -16,11 +16,10 @@ enum ButtonType {
 }
 
 class TableViewHeaderView: UITableViewHeaderFooterView {
-
+    
     // MARK: Variables
     
     static let CellID = "TableViewHeaderView"
-    
     private let disposeBag = DisposeBag()
     private let selectedButtonRelay = BehaviorRelay<UIButton?>(value: nil)
     var updateData = PublishSubject<ButtonType>()
@@ -110,7 +109,7 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
         expenseButton.snp.makeConstraints{
             $0.top.bottom.equalToSuperview()
             $0.leading.equalTo(allButton.snp.trailing).offset(25)
-
+            
         }
         incomeButton.snp.makeConstraints{
             $0.top.bottom.equalToSuperview()
@@ -122,7 +121,7 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
     
     private func setUpBindings() {
         let buttons = [allButton, expenseButton, incomeButton]
-
+        
         buttons.forEach { button in
             button.rx.tap
                 .map { button == self.allButton ? .all : (button == self.expenseButton ? .expense : .income) }
@@ -134,5 +133,6 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
                 })
                 .disposed(by: disposeBag)
         }
+        allButton.isSelected = true
     }
 }

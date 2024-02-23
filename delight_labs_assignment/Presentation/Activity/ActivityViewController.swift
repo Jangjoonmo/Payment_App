@@ -62,9 +62,8 @@ class ActivityViewController: UIViewController {
         setUpConstraint()
         
         bindViewModel()
-//        allTrigger.onNext(())
+        allTrigger.onNext(())
 //        transactionManager.parseJSON()
-        
     }
     
     func setUpDelegate() {

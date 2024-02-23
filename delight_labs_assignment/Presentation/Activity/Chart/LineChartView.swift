@@ -33,7 +33,11 @@ struct LineChartView: View {
     var minY: Double { min(incomeData.min() ?? 0, expenseData.min() ?? 0) }
     var maxY: Double { max(incomeData.max() ?? 1, expenseData.max() ?? 1) }
     
-    // endPoint는 애니메이션에 사용되므로 두 개의 데이터 세트 모두에 대해 동일하게 적용됩니다.
+//    var average: Double { (incomeData.reduce(0, +) + expenseData.reduce(0, +)) / Double(incomeData.count + expenseData.count) }
+//
+//    var minY: Double { average * 0.5 }
+//    var maxY: Double { average * 1.5 }
+
     @State private var endPoint: CGFloat = .zero
 
     var body: some View {

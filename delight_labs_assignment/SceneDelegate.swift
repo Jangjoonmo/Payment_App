@@ -34,6 +34,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         tabBarController.viewControllers = [bookingVC, cardVC, activityVC, profileVC]
         
+        tabBarController.selectedIndex = 2
+        
         tabBarController.tabBar.backgroundColor = .white
         tabBarController.tabBar.tintColor = UIColor(named: "MainColor")
         
