@@ -5,22 +5,28 @@
 
 <!--목차-->
 # 목차
-- [[1] 안내](#1-about-the-project)
-  - [주의 사항](#주의사항)
-  - [요구 사항](#요구사항)
-- [[2] 개발 환경](#2-getting-started)
-  - [Technologies](#Technologies)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-- [[3] Usage](#3-usage)
-- [[4] Contribution](#4-contribution)
-- [[5] Acknowledgement](#5-acknowledgement)
-- [[6] Contact](#6-contact)
-- [[7] License](#7-license)
+- [[1] 안내](#1-안내)
+  - [주의 사항](#주의-사항)
+  - [요구 사항](#요구-사항)
+- [[2] 개발 환경](#2-개발-환경)
+  - [사용기술](#사용기술)
+  - [사용법](#사용법)
+- [[3] 기능](#3-기능)
+  - [UI 구성](#ui-구성)
+  - [Mocking Data Preprocessing](#mocking-data-preprocessing)
+  - [TableView 구현](#tableview-구현)
+  - [LineChart 구현](#linechart-구현)
+  - [ETC](#etc)
+- [[4] 미완성 기능](#미완성-기능)
+- [[5] 트러블 슈팅 및 고민한 점](#트러블-슈팅-및-고민한-점)
+  - [방대한 양의 MockingData](#방대한-양의-mockingdata)
+  - [처음 다뤄보는 Chart 그리기](#처음-다뤄보는-chart-그리기)
+  - [UIKit과 SwiftUI의 동시 사용](#uikit과-swiftui의-동시-사용)
+- [[6] If i...](#6-if-i...)
 
 
 
-# [1] DELIGHT LABS iOS - 사전 과제
+# [1] 안내
 본 과제는 DELIGHT LABS iOS 채용 과정 홈테스트 사전 과제입니다.
 
 ## 주의사항
@@ -39,7 +45,7 @@
 # [2] 개발 환경
 *만약 운영체제에 따라 프로그램을 다르게 동작시켜야한다면, 운영체제별로 동작 방법을 설명하세요*
 
-## 사용 기술
+## 사용 기술
 *사용 환경, 언어 및 주요 라이브러리*
 
 - [Xcode] 15.2
@@ -113,7 +119,7 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 
 
 # [4] 미완성 기능
-## 미완성 기능
+
 - Line Chart에서 마우스 Hobber 처리 이벤트를 구현하지 못했습니다. 오픈소스 라이브러리 Charts를 사용했을 시엔 줌인/아웃 등의 처리가 구현되어 있어 SwiftUI로도 구현이 가능해보였으나 직접 함수를 만들어야 했기에 후순위로 밀려 구현하지 못하였습니다.
 - 입출금 발생시 푸시 알림을 구현하지 못하였습니다. 이전에 해커톤에서 유사하게 서버 연결 없이 FCM(Firebase Cloud Messaging)을 구현하였으나 키와 인증서 등록에 오랜 시간이 걸리는 것을 알고 후순위로 두어 구현하지 못하였습니다.
 - 기타 디테일들을 살리지 못했습니다. LineChart와 TableView 로딩 시 로딩 Indicator를 보여주어 사용자 경험을 향상시키려 하였으나 LineChart 바인딩 문제로 구현하지 못하였습니다. 
@@ -133,16 +139,11 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 ## UIKit과 SwiftUI의 동시 사용
 LineCharView를 SwiftUI로 구현한 후 이를 UIKit으로 된 ViewController에서 사용하려고 하니 호환성 문제인지 첫 화면로딩을 제외하곤 애니메이션도 안되고 버튼 처리, 데이터 로딩도 안됐습니다. SwiftUI로 구현한 ViewController와 UIKit은 이전 프로젝트에서 연결해본 적은 있으나 SwiftUI의 View를 UIKit ViewController에서는 처음이어서 비동기처리에 문제가 많았습니다. 프로젝트의 MVVM 비동기를 RxSwift로 처리하였기 때문에 RxSwift로 연결하였으나 작동하지 않았습니다. 아마 Combine으로 랩핑하면 가능할 것 같다고 생각이 들었으나 Rx에 고집하면서 시간을 더 잡아먹었습니다. 결국 Rx로 구현한 LineChartViewModel을 Rx를 포기하고 SwiftUI의 내장 @Published, @ObservedObject 래퍼를 사용해 버튼 처리와 데이터 로드는 구현이 되었습니다. 그러나 뷰모델이 init되었을 때만 애니메이션이 생성되고 버튼 클릭 시엔 생성되지 않은 문제점은 해결하지 못하였습니다.
 
-#[6] If i....
+#[6] If i...
 *만약 본 사전과제를 처음 부터 다시 한다면(직접 핀테크 앱을 구현한다고 생각하며)*
 - 트랜잭션 매니저는 현재와 같이 싱글톤 패턴으로 두어 메모리 효율적으로 합니다. 트랜잭션 매니저는 현 기능에 사용되는 모든 ViewModel에 존재해야 하며 핀테크 앱 내 대다수의 기능에 사용되기에 싱글톤 패턴을 채택해 메모리를 아낄 수 있습니다.
 - LineChart는 SwiftUI 그대로 구현합니다. 그래프를 그리는 여러 오픈소스 라이브러리를 보고 가장 인기가 많은 'Charts'를 사용해보았을 때, 훨씬 편하고 쉽게 구현할 수 있습니다. 그러나 디테일한 부분을 구현하기 어렵고, 개인적인 성장이 더뎌질 것 같은 이유로 SwiftUI의 내장 Chart를 써서 구현하고 싶습니다. SwiftUI와 UIKit의 연결은 현 iOS 생태계에서 피할 수 없는 과정으로 생각하고 있기에 꼭 한번 구현해볼 것 같습니다.
 - 스레드 처리와 사용자 경험에 더 초점을 맞출 것 같습니다. 현재까지 구현한 방식으로는 백그라운드에서 데이터 처리하고 메인 스레드에서 UI를 업데이트하도록 하였으나 데이터 처리 동안 화면이 멈춰있는 이슈가 있어 사용자 경험이 저하됩니다. 그동안 Indicator를 보여주어 UI가 업데이트 중인 것을 알릴 수 있도록 사용자 관점에서 기능 구현에 더 힘써야 할 것 같습니다. 
-
-# [7] License
-MIT 라이센스
-라이센스에 대한 정보는 [`DELIGHT LABS`][license-url]에 있습니다.
-
 
 
 <!--Url for Badges-->
