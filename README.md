@@ -64,14 +64,16 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 ```
 2. 최소 iOS - Simulator 버전
 17.2
-3. 초기 실행 시 데이터 파싱
+3. TransactionManager의 parseJson 파일 위치를 변경해주세요.
+<img width="1141" alt="image" src="https://github.com/Jangjoonmo/delight_labs_assignment/assets/99167099/f54891ce-74c2-4324-a14a-cfb8377da322">
+4. 초기 실행 시 데이터 파싱 시 시간이 걸릴 수 있습니다. 
+   
 <img width="617" alt="image" src="https://github.com/Jangjoonmo/delight_labs_assignment/assets/99167099/8d1734e5-b49a-4f2d-98cd-60e73b00cc09">
-
+5. 데이터 파싱은 완료되면 더이상 안하고 바로 Realm 쿼리를 수행합니다.
 
 
 
 # [3] 기능
-***스크린샷, 코드** 등을 통해 **사용 방법**과 **사용 예제**를 보여주세요. 사용 예제별로 h2 헤더로 나누어 설명할 수 있습니다.*
 
 ## UI 구성
 - UIKit과 SwiftUI 함께 사용
