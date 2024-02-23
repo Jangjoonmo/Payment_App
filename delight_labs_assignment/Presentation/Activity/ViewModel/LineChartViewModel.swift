@@ -37,7 +37,7 @@ class LineChartViewModel: ObservableObject {
             } else { // 30일
                 incomeTransactions = TransactionManager.shared.getIncomeTransactionsInPastMonth()
                 expenseTransactions = TransactionManager.shared.getExpenseTransactionsInPastMonth()
-                interval = 8    // 3시간 간격
+                interval = 8    // 8시간 간격
             }
             
             var incomeValues: [Double] = []

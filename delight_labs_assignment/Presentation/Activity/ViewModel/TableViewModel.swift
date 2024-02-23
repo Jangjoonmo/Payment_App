@@ -17,6 +17,7 @@ enum TransactionType {
 
 class TableViewModel {
     
+    @Published var isLoading = false
     private let transactionManager: TransactionManager
     let disposeBag = DisposeBag()
 
@@ -40,6 +41,7 @@ class TableViewModel {
         input.trigger
             .flatMapLatest { [weak self] type -> Observable<[TransactionData]> in
                 guard let self = self else { return .empty() }
+                isLoading = true
                 switch type {
                 case .all:
                     let transactions = self.transactionManager.getLast20Transactions()
@@ -52,6 +54,11 @@ class TableViewModel {
                     return .just(transactions)
                 }
             }
+            .do(onNext: { [weak self] _ in
+                self?.isLoading = false  // 로딩 종료
+            }, onError: { [weak self] _ in
+                self?.isLoading = false  // 에러 발생 시 로딩 종료
+            })
             .bind(to: transactions)
             .disposed(by: disposeBag)
         

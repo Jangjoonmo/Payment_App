@@ -25,9 +25,8 @@ class LineChartTopView: UIView {
     
     let weekButton: UIButton = UIButton().then{
         $0.setTitle("Week", for: .normal)
-        $0.setTitleColor(.white, for: .selected)
         $0.backgroundColor = UIColor(named: "MainColor") // #363062
-        $0.setTitleColor(UIColor(hexCode: "#6B6B6B"), for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         
         $0.configuration = UIButton.Configuration.bordered()
         
@@ -39,7 +38,7 @@ class LineChartTopView: UIView {
         $0.setTitle("Month", for: .normal)
         $0.setTitleColor(.white, for: .selected)
         $0.setTitleColor(UIColor(hexCode: "#6B6B6B"), for: .normal)
-        $0.backgroundColor = UIColor(named: "MainColor")
+        $0.backgroundColor = UIColor(hexCode: "#F5F5F5")
 
         $0.configuration = UIButton.Configuration.bordered()
         
@@ -83,6 +82,13 @@ class LineChartTopView: UIView {
         setUI()
         bindViewModel()
     }
+    
+//    init(viewModel: LineChartViewModel, frame: CGRect) {
+//        self.viewModel = viewModel
+//        super.init(frame: frame)
+//        setUI()
+//        bindViewModel()
+//    }
     
     //MARK: setUI()
     
@@ -153,6 +159,7 @@ class LineChartTopView: UIView {
                 self.weekButton.backgroundColor = UIColor(named: "MainColor")
                 self.monthButton.isSelected = false
                 self.monthButton.backgroundColor = UIColor(hexCode: "#F5F5F5")
+                self.weekButton.setTitleColor(.white, for: .selected)
                 self.viewModel.fetchTransactions(period: 7)
 
             })

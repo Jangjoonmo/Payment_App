@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RealmSwift
 import SwiftUI
+import SnapKit
 
 class ActivityViewController: UIViewController {
 
@@ -28,11 +29,13 @@ class ActivityViewController: UIViewController {
         $0.isScrollEnabled = false
         $0.separatorStyle = .none
     }
+    var tableViewHeightConstraint: Constraint?
 
     var chartView: UIHostingController<ContentView>!
     var lineChartViewModel = LineChartViewModel()
     
     let transactionManager = TransactionManager()
+    
     var tableViewModel: TableViewModel!
     let allTrigger = PublishSubject<Void>()
     let expenseTrigger = PublishSubject<Void>()
@@ -48,7 +51,6 @@ class ActivityViewController: UIViewController {
         setUpDelegate()
         
         tableViewModel = TableViewModel(transactionManager: transactionManager)
-        topView.viewModel = lineChartViewModel
           
         let contentView = ContentView(viewModel: lineChartViewModel)
         chartView = UIHostingController(rootView: contentView)
@@ -61,12 +63,17 @@ class ActivityViewController: UIViewController {
         
         bindViewModel()
         allTrigger.onNext(())
-//        transactionManager.parseJSON()
+        transactionManager.parseJSON(){
+            self.allTrigger.onNext(())
+        }
+
     }
     
     func setUpDelegate() {
-        tableView.delegate = self
+        tableView.delegate = nil
         tableView.dataSource = nil
+        tableView.rx.setDelegate(self)
+        
     }
     
     // MARK: View
@@ -81,7 +88,7 @@ class ActivityViewController: UIViewController {
     func setUpLayout() {
         self.view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [topBar, topView, chartView.view, tableView]
+        [topBar, topView, chartView.view, tableView, loadingIndicator]
             .forEach{contentView.addSubview($0)}
     }
     
@@ -117,8 +124,11 @@ class ActivityViewController: UIViewController {
             $0.top.equalTo(chartView.view.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.height.equalTo(1200)
-
+            tableViewHeightConstraint = $0.height.equalTo(1200).constraint
+        }
+        
+        loadingIndicator.snp.makeConstraints{
+            $0.center.equalTo(tableView)
         }
         
     }
@@ -145,19 +155,28 @@ class ActivityViewController: UIViewController {
         output.error.subscribe(onNext: { error in
             print(error)
         }).disposed(by: disposeBag)
-
+        
+        tableViewModel.$isLoading
+            .receive(on: DispatchQueue.main)  // 메인 쓰레드에서 수신
+            .sink { [weak self] isLoading in  // 새로운 값 수신 시 실행되는 클로저
+                if isLoading {
+                    self?.loadingIndicator.isHidden = false
+                    self?.loadingIndicator.startAnimating()
+                } else {
+                    self?.loadingIndicator.isHidden = true
+                    self?.loadingIndicator.stopAnimating()
+                }
+            }
     }
     
-
+    // MARK: Func
     
-    // MARK: Function
-    
-    @objc func notificationTapped() {
-        print("알림 버튼 클릭")
-        
+    func setTableViewHeight(_ count: Int) {
+        tableViewHeightConstraint?.update(offset: count * 71 + 150)
     }
 
 }
+
 extension ActivityViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 71
@@ -171,12 +190,15 @@ extension ActivityViewController: UITableViewDelegate {
                 
             case .all:
                 print("최근 입출금 20건 버튼 클릭")
+                self?.setTableViewHeight(20)
                 self?.allTrigger.onNext(())
             case .expense:
                 print("최근 출금 10건 버튼 클릭")
+                self?.setTableViewHeight(10)
                 self?.expenseTrigger.onNext(())
             case .income:
                 print("최근 입금 10건 버튼 클릭")
+                self?.setTableViewHeight(10)
                 self?.incomeTrigger.onNext(())
             }
             

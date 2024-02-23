@@ -17,16 +17,14 @@ struct ContentView: View {
     }
 
     var body: some View {
-//        VStack {
-//            LineChartView(viewModel: viewModel, incomeColor: Color(uiColor: UIColor(named: "GreenColor") ?? .green), expenseColor: Color(uiColor: UIColor(named: "MainColor") ?? .blue))
-//        }
         VStack {
             if viewModel.isLoading {
                 // 로딩 인디케이터 표시
                 ActivityIndicator()
             } else {
                 // 그래프 표시
-                LineChartView(viewModel: viewModel, incomeColor: Color(uiColor: UIColor(named: "GreenColor") ?? .green), expenseColor: Color(uiColor: UIColor(named: "MainColor") ?? .blue))                    }
+                LineChartView(viewModel: viewModel, incomeColor: Color(uiColor: UIColor(named: "GreenColor") ?? .green), expenseColor: Color(uiColor: UIColor(named: "MainColor") ?? .blue))
+            }
         }
     }
 }
