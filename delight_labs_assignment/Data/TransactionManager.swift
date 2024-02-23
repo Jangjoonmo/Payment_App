@@ -58,7 +58,7 @@ class TransactionManager {
         //Json Mock 데이터 받아와서 Realm에 저장
         DispatchQueue.global().async {
             print("parseJSON 실행")
-            let url = URL(fileURLWithPath: "/Users/jangjoonmo/Downloads/delightlabs-ios-hometest-mockdata-2024.json")
+            let url = URL(fileURLWithPath: "/Users/jangjoonmo/Downloads/delightlabs-ios-hometest-mockdata-2024.json") // Fix
             do {
                 let data = try Data(contentsOf: url)
                 let transactions = try JSONDecoder().decode([Transaction].self, from: data)
