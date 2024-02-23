@@ -89,7 +89,7 @@ class TransactionTableViewCell: UITableViewCell {
         }
         nameLabel.snp.makeConstraints{
             $0.leading.equalTo(symbolImageView.snp.trailing).offset(28)
-            $0.trailing.equalTo(amountLabel.snp.leading).offset(1)
+            $0.trailing.equalTo(amountLabel.snp.leading)
             $0.top.equalToSuperview().inset(2.5)
         }
         typeLabel.snp.makeConstraints{
@@ -99,7 +99,9 @@ class TransactionTableViewCell: UITableViewCell {
         }
         amountLabel.snp.makeConstraints{
             $0.centerY.equalTo(nameLabel)
+            $0.leading.equalTo(nameLabel.snp.trailing)
             $0.trailing.equalToSuperview().inset(28)
+            $0.width.greaterThanOrEqualTo(100)
         }
         timeStampLabel.snp.makeConstraints{
             $0.bottom.equalTo(typeLabel)

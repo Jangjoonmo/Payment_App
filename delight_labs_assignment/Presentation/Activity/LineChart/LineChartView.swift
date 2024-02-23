@@ -9,58 +9,93 @@ import SwiftUI
 import RxSwift
 import RxCocoa
 
+//struct ContentView: View {
+//    @StateObject var viewModel = LineChartViewModel()
+//    
+//    @State var incomeData: [Double] = []
+//    @State var expenseData: [Double] = []
+//
+//    var body: some View {
+//        VStack {
+//            LineChartView(incomeData: viewModel.incomeData, expenseData: viewModel.expenseData, incomeColor: Color(uiColor: UIColor(named: "GreenColor") ?? .green), expenseColor: Color(uiColor: UIColor(named: "MainColor") ?? .blue))
+//        }
+//    }
+//}
+
 struct ContentView: View {
-    @StateObject var viewModel = LineChartViewModel()
-    
-    @State var incomeData: [Double] = []
-    @State var expenseData: [Double] = []
+    @ObservedObject var viewModel = LineChartViewModel()
 
     var body: some View {
         VStack {
-            LineChartView(incomeData: viewModel.incomeData, expenseData: viewModel.expenseData, incomeColor: Color(uiColor: UIColor(named: "GreenColor")!), expenseColor: Color(uiColor: UIColor(named: "MainColor")!))
-//            LineChartView(data: viewModel.expenseData, lineColor: .blue)
+            LineChartView(viewModel: viewModel, incomeColor: Color(uiColor: UIColor(named: "GreenColor") ?? .green), expenseColor: Color(uiColor: UIColor(named: "MainColor") ?? .blue))
         }
     }
 }
 
-
 struct LineChartView: View {
-    var incomeData: [Double]
-    var expenseData: [Double]
-    var incomeColor: Color
-    var expenseColor: Color
-
-    var minY: Double { min(incomeData.min() ?? 0, expenseData.min() ?? 0) }
-    var maxY: Double { max(incomeData.max() ?? 1, expenseData.max() ?? 1) }
-    
-//    var average: Double { (incomeData.reduce(0, +) + expenseData.reduce(0, +)) / Double(incomeData.count + expenseData.count) }
+//    @ObservedObject var viewModel: LineChartViewModel
+//    var incomeData: [Double]
+//    var expenseData: [Double]
+//    var incomeColor: Color
+//    var expenseColor: Color
 //
-//    var minY: Double { average * 0.5 }
-//    var maxY: Double { average * 1.5 }
+//    var minY: Double { min(incomeData.min() ?? 0, expenseData.min() ?? 0) }
+//    var maxY: Double { max(incomeData.max() ?? 1, expenseData.max() ?? 1) }
+//
+//    @State private var endPoint: CGFloat = .zero
+//
+//    var body: some View {
+//        VStack {
+//            GeometryReader { geometry in
+//                ZStack {
+//                    createPath(data: incomeData, geometry: geometry, lineColor: incomeColor)
+//                    createPath(data: expenseData, geometry: geometry, lineColor: expenseColor)
+//                }
+//            }
+//            .onAppear {
+//                withAnimation(.linear(duration: 2)) {
+//                    self.endPoint = 1
+//                }
+//            }
+//            HStack {
+//                Text(Date().addingTimeInterval(-6 * 24 * 60 * 60), formatter: dateFormatter)
+//                Spacer()
+//                Text(Date(), formatter: dateFormatter)
+//            }
+//        }
+//    }
+    @ObservedObject var viewModel: LineChartViewModel
+        var incomeColor: Color
+        var expenseColor: Color
 
-    @State private var endPoint: CGFloat = .zero
+        var minY: Double { min(viewModel.incomeData.min() ?? 0, viewModel.expenseData.min() ?? 0) }
+        var maxY: Double { max(viewModel.incomeData.max() ?? 1, viewModel.expenseData.max() ?? 1) }
 
-    var body: some View {
-        VStack {
-            GeometryReader { geometry in
-                ZStack {
-                    createPath(data: incomeData, geometry: geometry, lineColor: incomeColor)
-                    createPath(data: expenseData, geometry: geometry, lineColor: expenseColor)
+        @State private var endPoint: CGFloat = .zero
+
+        var body: some View {
+            VStack {
+                GeometryReader { geometry in
+                    ZStack {
+                        createPath(data: viewModel.incomeData, geometry: geometry, lineColor: incomeColor)
+                        createPath(data: viewModel.expenseData, geometry: geometry, lineColor: expenseColor)
+                    }
                 }
-            }
-            .onAppear {
-                withAnimation(.linear(duration: 2)) {
-                    self.endPoint = 1
+                .onAppear {
+                    print("Income data: \(viewModel.incomeData)")
+                    print("Expense data: \(viewModel.expenseData)")
+                    
+                    withAnimation(.linear(duration: 2)) {
+                        self.endPoint = 1
+                    }
                 }
-            }
-            HStack {
-                Text(Date().addingTimeInterval(-6 * 24 * 60 * 60), formatter: dateFormatter)
-                Spacer()
-                Text(Date(), formatter: dateFormatter)
+                HStack {
+                    Text(Date().addingTimeInterval(-6 * 24 * 60 * 60), formatter: dateFormatter)
+                    Spacer()
+                    Text(Date(), formatter: dateFormatter)
+                }
             }
         }
-    }
-
     func createPath(data: [Double], geometry: GeometryProxy, lineColor: Color) -> some View {
         ZStack {
             Path { path in

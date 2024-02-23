@@ -148,23 +148,22 @@ class ActivityViewController: UIViewController {
             print(error)
         }).disposed(by: disposeBag)
         
-        
-        // ChartViewModel 바인딩
-        
         chartViewModel.incomeObservable
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] incomeData in
                 print("Income data: \(incomeData)")
-                self?.chartView.rootView.incomeData = incomeData
+                self?.chartViewModel.incomeData = incomeData
             })
             .disposed(by: disposeBag)
-        
+
         chartViewModel.expenseObservable
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] expenseData in
                 print("Expense data: \(expenseData)")
-                self?.chartView.rootView.expenseData = expenseData
+                self?.chartViewModel.expenseData = expenseData
             })
             .disposed(by: disposeBag)
-        
+
     }
     
 

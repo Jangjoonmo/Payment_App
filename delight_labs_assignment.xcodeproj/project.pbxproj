@@ -161,13 +161,13 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		9435A3112B8629550009CE29 /* Recent Transactions */ = {
+		9435A3112B8629550009CE29 /* RecentTransactionsTable */ = {
 			isa = PBXGroup;
 			children = (
 				9435A3152B862AC20009CE29 /* TableViewHeaderView.swift */,
 				9435A3002B860C7F0009CE29 /* TransactionTableViewCell.swift */,
 			);
-			path = "Recent Transactions";
+			path = RecentTransactionsTable;
 			sourceTree = "<group>";
 		};
 		9435A3142B862A7D0009CE29 /* View */ = {
@@ -182,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				9435A30B2B861DF50009CE29 /* TableViewModel.swift */,
+				9435A32B2B87C7B60009CE29 /* LineChartViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -190,7 +191,6 @@
 			isa = PBXGroup;
 			children = (
 				9435A2FB2B85FB8F0009CE29 /* LineChartTopView.swift */,
-				9435A32B2B87C7B60009CE29 /* LineChartViewModel.swift */,
 				9435A32D2B87C7E30009CE29 /* LineChartView.swift */,
 			);
 			path = LineChart;
@@ -203,7 +203,7 @@
 				9435A3222B8672C90009CE29 /* ViewModel */,
 				9435A3252B8797EA0009CE29 /* LineChart */,
 				9435A3142B862A7D0009CE29 /* View */,
-				9435A3112B8629550009CE29 /* Recent Transactions */,
+				9435A3112B8629550009CE29 /* RecentTransactionsTable */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
