@@ -72,13 +72,14 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 - Figma의 화면 구성 및 제약조건을 정확히 구현하기 위해 SnapKit과 Then 라이브러리를 사용하여 Code-Base로 AutoLayout을 잡아 구현했습니다.
 - Line Chart는 SwiftUI와 내장 라이브러리 Chart를 사용하였습니다.
 - Assets 파일에 필요한 리소스들을 넣어 구현했습니다.
+- 크게는 2개의 뷰로 구성되어 있어 MVC 패턴을 사용할까 했지만 여러 인터랙션이 존재하는 것을 보고 MVVM 패턴을 채택했습니다.
 - <img width="173" alt="image" src="https://github.com/Jangjoonmo/delight_labs_assignment/assets/99167099/50a62934-312f-484f-a12c-318d2294f6c4">
 
 
 ## Mocking Data Preprocessing
 - 63MB의 Json파일, 총 612,000개의 데이터를 파싱하여 Realm에 저장하였습니다.
 - 효율적인 load And Save를 위해 1000개 단위로 청크하여 저장하였습니다.
-- 싱글톤 TransactionManager을 사용하였습니다.
+- 싱글톤 패턴 TransactionManager을 사용하여 메모리 낭비를 줄였습니다.
 - 필요한 경우의 수를 나누어 각각의 쿼리 함수를 선언하였습니다.
 <img width="150" alt="image" src="https://github.com/Jangjoonmo/delight_labs_assignment/assets/99167099/26219386-8476-403b-bdfe-57498803f5c5">
 <img width="150" alt="image" src="https://github.com/Jangjoonmo/delight_labs_assignment/assets/99167099/91ba2e66-f073-4380-8a0c-5e939bca0c91">
@@ -123,7 +124,11 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 
 ## 처음 다뤄보는 Chart 그리기
 주로 주식이나 핀테크 앱에 사용되는 Chart는 사용해본 적이 없어서 또 한번 당황스러웠습니다. 먼저 Chart를 그리는 방법을 검색한 결과 크게 오픈소스인 'Charts'를 사용하거나 SwiftUI로 그리는 것이 있었습니다. 가장 주로 사용하는 Charts 사용법을 블로그를 보면서 구현한 결과 UI가 너무 안좋았습니다. 터치 모션도 인식하고 여러 내장 기능들이 많았으나 Figma에 제시된 화면 요구 사항이랑 너무 다르고 안이쁘게 나왔습니다. 그래서 결국 Charts 라이브러리를 포기하고 능숙하지 않은 SwiftUI로 그리기로 결정했습니다. 
-몇시간의 노력 끝에 별도의 LineCharViewModel을 만들어 SwiftUI로 구현된 화면을 연결하여 라인을 그리는데 까지는 성공하였으나 너무도 많은 문제
+몇시간의 노력 끝에 별도의 LineCharViewModel을 만들어 SwiftUI로 구현된 화면을 연결하여 라인을 그리는데 까지는 성공하였으나 너무도 많은 문제가 발생하였습니다. 먼저 개발 초기에 실수를 범했습니다. 제가 사용하던 주식앱들을 생각하여 하루 거래양의 총합을 계산하여 그래프를 그렸습니다. 
+이를 수정한 후 데이터를 받아 그래프를 그리니까 그래프가 선들로 빼곡했습니다. 주어진 Mock데이터의 RDBS를 확인한 결과 1월부터 2월까지 1분단위로 항상 데이터가 있었습니다. 그래서 당연히 그래프가 선으로 꽉찬 것이었으며 어떻게 이를 해결할 지 고민하면서 자주 사용하던 Webull앱의 월봉 그래프를 보니 하루 단위로 그래프를 그린것을 확인하였습니다. 그래서 저는 더 빠른 쿼리를 위해 일주일 그래프는 1시간 간격, 한달 그래프는 8시간 간격으로 데이터를 받아와서 그래프를 그렸습니다. 애니메이션과 그라데이션 처리는 해외 블로그를 통해 비교적 쉽게 구현할 수 있었으나 데이터 처리에서 가장 긴 시간이 소요됐습니다. 여기서도 효율적이고 빠른 데이터 처리를 위한 고민을 가장 많이 했습니다. 
+
+## UIKit과 SwiftUI의 동시 사용
+LineCharView를 SwiftUI로 구현한 후 이를 UIKit으로 된 ViewController에서 사용하려고 하니 호환성 문제인지 첫 화면로딩을 제외하곤 애니메이션도 안되고 버튼 처리, 데이터 로딩도 안됐습니다. SwiftUI로 구현한 ViewController와 UIKit은 이전 프로젝트에서 연결해본 적은 있으나 SwiftUI의 View를 UIKit ViewController에서는 처음이어서 비동기처리에 문제가 많았습니다. 프로젝트의 MVVM 비동기를 RxSwift로 처리하였기 때문에 RxSwift로 연결하였으나 작동하지 않았습니다. 아마 Combine으로 랩핑하면 가능할 것 같다고 생각이 들었으나 Rx에 고집하면서 시간을 더 잡아먹었습니다. 결국 Rx로 구현한 LineChartViewModel을 Rx를 포기하고 SwiftUI의 내장 @Published, @ObservedObject 래퍼를 사용해 버튼 처리와 데이터 로드는 구현이 되었습니다. 그러나 뷰모델이 init되었을 때만 애니메이션이 생성되고 버튼 클릭 시엔 생성되지 않은 문제점은 해결하지 못하였습니다. 
 
 # [7] License
 MIT 라이센스
