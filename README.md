@@ -105,6 +105,7 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 - HexCode로 UIColor를 사용할 수 있게 Extension하였습니다.
 - Figma의 화면 요구 사항을 정확히 구현하기 위해 SceneDelegate에서 TabBarController를 사용하였습니다.
 - Json Mock 데이터 파일을 그대로 사용할때 보다 훨씬 빠른 Realm 데이터베이스를 활용하여 쿼리 속도를 올렸습니다.
+- Json파일의 모델과 별도로 TransactionData 모델을 만들어 실제 서비스에 필요한 transactionType; income/expense 속성을 추가하였습니다.
 - 주요 기능 별 Branch를 나눠 Commit Convention에 맞게 버전 관리를 하였습니다.
 - 의존성을 낮추고 유지보수에 효율적인 MVVM 디자인 패턴 및 Clean-Architecture 폴더링을 사용하였습니다.
 <img width="600" alt="image" src="https://github.com/Jangjoonmo/delight_labs_assignment/assets/99167099/62947525-cf51-46e9-9067-11224b49f35c">
@@ -112,15 +113,17 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 
 
 
-# [5] Acknowledgement
+# [5] 트러블 슈팅 및 고민한 점
 ***유사한 프로젝트의 레포지토리** 혹은 **블로그 포스트** 등 프로젝트 구현에 영감을 준 출처에 대해 링크를 나열하세요.*
 
-- [Readme Template - Embedded Artistry](https://embeddedartistry.com/blog/2017/11/30/embedded-artistry-readme-template/)
-- [How to write a kickass Readme - James.Scott](https://dev.to/scottydocs/how-to-write-a-kickass-readme-5af9)
-- [Best-README-Template - othneildrew](https://github.com/othneildrew/Best-README-Template#prerequisites)
-- [Img Shields](https://shields.io/)
-- [Github Pages](https://pages.github.com/)
+## 방대한 양의 MockingData
+과제를 시작할 초기에 빠르게 UI를 먼저 구현하고 데이터를 받아와서 테이블뷰를 먼저 구현할 생각이었습니다. 화면 구현이 거의 다 끝나고 첨부된 Json파일 Mock데이터를 프로젝트 번들에 넣자마자 렉이 걸렸습니다. 그리고 시뮬레이터로 Json 데이터 파싱을 호출하니 앱이 멈추다시피 했습니다. 이런 방대한 양의 데이터를 시뮬레이터를 호출할 때 마다 불러오는 것은 거의 불가능이었고 메모리 측면에서도 매우 비효율적이라 생각했습니다.
+이전에는 서버에서 필요한 데이터만 받아와서 사용했기에 약 61만개의 데이터를 처리하는 것은 처음이었습니다. 당황스러움과 의문점이 무수히 들었습니다. 로컬 저장소를 사용해야 하는지. 아니면 GCD를 이용해 앱이 실행됨과 동시에 비동기로 불러와 실시간으로 받아와야 하는지. 로컬 저장소를 쓰면 어떤거를 사용해야 하는지? 그리고 가장 궁금했던 것은 "왜 61만개나 되는 데이터를 주신건지" 분명 이러한 데이터를 주신 것에 이유가 있다 생각이 들었고 여러 고민 끝에 '페이먼츠 앱이니까 방대한 양의 데이터를 직접 다룰 수 있는지'를 판단하는 것이라 느껴서 여러 방법을 찾았습니다.
+결국 가장 빠르게 많은 양의 데이터를 받아올 수 있는 오픈소스 RDBS인 Realm을 사용하기로 결정하였습니다. 그러나 Realm에 데이터를 그대로 넣는 것도 오래걸리는 작업이므로 페이징을 사용할까 고민하다가 데이터를 chunk단위로 분할하여 받아오도록(1000개)하여 로딩과 저장 속도를 초기보다 훨씬 올릴 수 있었습니다. 또한 앱 요구 사항을 분석한 결과 필요한 데이터가 7개의 경우의 수로 나뉘는 것을 확인했습니다. 일주일,한달 분량의 입/출금 데이터와 최근 입출금 20건, 최근 출금/입금 각 10건씩. 이 경우의 수에 맞는 데이터를 불러오는 쿼리 함수를 따로 설정해두어 사용했습니다.
 
+## 처음 다뤄보는 Chart 그리기
+주로 주식이나 핀테크 앱에 사용되는 Chart는 사용해본 적이 없어서 또 한번 당황스러웠습니다. 먼저 Chart를 그리는 방법을 검색한 결과 크게 오픈소스인 'Charts'를 사용하거나 SwiftUI로 그리는 것이 있었습니다. 가장 주로 사용하는 Charts 사용법을 블로그를 보면서 구현한 결과 UI가 너무 안좋았습니다. 터치 모션도 인식하고 여러 내장 기능들이 많았으나 Figma에 제시된 화면 요구 사항이랑 너무 다르고 안이쁘게 나왔습니다. 그래서 결국 Charts 라이브러리를 포기하고 능숙하지 않은 SwiftUI로 그리기로 결정했습니다. 
+몇시간의 노력 끝에 별도의 LineCharViewModel을 만들어 SwiftUI로 구현된 화면을 연결하여 라인을 그리는데 까지는 성공하였으나 너무도 많은 문제
 
 # [7] License
 MIT 라이센스
