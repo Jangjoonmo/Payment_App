@@ -143,7 +143,7 @@ git clone https://github.com/Jangjoonmo/delight_labs_assignment.git
 
   LineCharView를 SwiftUI로 구현한 후 이를 UIKit으로 된 ViewController에서 사용하려고 하니 호환성 문제인지 첫 화면로딩을 제외하곤 애니메이션도 안되고 버튼 처리, 데이터 로딩도 안됐습니다. SwiftUI로 구현한 ViewController와 UIKit은 이전 프로젝트에서 연결해본 적은 있으나 SwiftUI의 View를 UIKit ViewController에서는 처음이어서 비동기처리에 문제가 많았습니다. 프로젝트의 MVVM 비동기를 RxSwift로 처리하였기 때문에 RxSwift로 연결하였으나 작동하지 않았습니다. 아마 Combine으로 랩핑하면 가능할 것 같다고 생각이 들었으나 Rx에 고집하면서 시간을 더 잡아먹었습니다. 결국 Rx로 구현한 LineChartViewModel을 Rx를 포기하고 SwiftUI의 내장 @Published, @ObservedObject 래퍼를 사용해 버튼 처리와 데이터 로드는 구현이 되었습니다. 그러나 뷰모델이 init되었을 때만 애니메이션이 생성되고 버튼 클릭 시엔 생성되지 않은 문제점은 해결하지 못하였습니다.
 
-##[6] If i...
+# [6] If i...
 
 *만약 본 사전과제를 처음 부터 다시 한다면(직접 핀테크 앱을 구현한다고 생각하며)*
 
