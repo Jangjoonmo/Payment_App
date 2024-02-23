@@ -124,12 +124,13 @@ class TableViewHeaderView: UITableViewHeaderFooterView {
         
         buttons.forEach { button in
             button.rx.tap
-                .map { button == self.allButton ? .all : (button == self.expenseButton ? .expense : .income) }
-                .do(onNext: { [weak self] _ in
-                    buttons.forEach { $0.isSelected = $0 == button }
-                })
-                .subscribe(onNext: { [weak self] type in
-                    self?.updateData.onNext(type)
+                .subscribe(onNext: { [weak self] in
+                    if button.isSelected == false {
+                        buttons.forEach { $0.isSelected = false }
+                        button.isSelected = true
+                        let type = button == self?.allButton ? ButtonType.all : (button == self?.expenseButton ? ButtonType.expense : ButtonType.income)
+                        self?.updateData.onNext(type)
+                    }
                 })
                 .disposed(by: disposeBag)
         }

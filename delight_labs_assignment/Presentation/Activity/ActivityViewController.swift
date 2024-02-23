@@ -20,7 +20,7 @@ class ActivityViewController: UIViewController {
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     
     let topBar = TransactionTopBarView()
-    let topView = TransactionTopView()
+    let topView = LineChartTopView()
     lazy var tableView: UITableView = UITableView().then{
         $0.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.cellID)
         $0.register(TableViewHeaderView.self, forHeaderFooterViewReuseIdentifier: TableViewHeaderView.CellID)

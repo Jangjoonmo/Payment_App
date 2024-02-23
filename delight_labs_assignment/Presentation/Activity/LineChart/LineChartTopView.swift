@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import RxSwift
 
-class TransactionTopView: UIView {
+class LineChartTopView: UIView {
     
     //MARK: Variables
     
